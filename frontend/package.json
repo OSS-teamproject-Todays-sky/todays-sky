@@ -1,5 +1,5 @@
 {
-  "name": "today-sky",
+  "name": "frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-router-dom": "^7.9.3",
     "vue": "^3.5.22"
   },
   "devDependencies": {
