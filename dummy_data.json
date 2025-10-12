@@ -1,0 +1,83 @@
+{
+    "current_weather": {
+      "temp_min": "18.0",
+      "temp_max": "26.0",
+      "temperature": "20",
+      "sky": "흐림",
+      "precip_type": "강수없음",
+      "precip_prob": "30",
+      "humidity": "85"
+    },
+    "weekly_forecast": [
+      {
+        "date": "2025-10-12",
+        "day_of_week": "일요일",
+        "temp_min": "18.0",
+        "temp_max": "26.0",
+        "sky": "흐림",
+        "precip_prob": "30"
+      },
+      {
+        "date": "2025-10-13",
+        "day_of_week": "월요일",
+        "temp_min": "19.0",
+        "temp_max": "27.0",
+        "sky": "맑음",
+        "precip_prob": "10"
+      },
+      {
+        "date": "2025-10-14",
+        "day_of_week": "화요일",
+        "temp_min": "20.0",
+        "temp_max": "28.0",
+        "sky": "맑음",
+        "precip_prob": "0"
+      },
+      {
+        "date": "2025-10-15",
+        "day_of_week": "수요일",
+        "temp_min": 17,
+        "temp_max": 24,
+        "sky_am": "구름많음",
+        "sky_pm": "흐림",
+        "precip_prob_am": 20,
+        "precip_prob_pm": 40
+      },
+      {
+        "date": "2025-10-16",
+        "day_of_week": "목요일",
+        "temp_min": 18,
+        "temp_max": 25,
+        "sky_am": "흐림",
+        "sky_pm": "흐리고 비",
+        "precip_prob_am": 40,
+        "precip_prob_pm": 70
+      },
+      {
+        "date": "2025-10-17",
+        "day_of_week": "금요일",
+        "temp_min": 19,
+        "temp_max": 26,
+        "sky_am": "비",
+        "sky_pm": "구름많음",
+        "precip_prob_am": 80,
+        "precip_prob_pm": 30
+      },
+      {
+        "date": "2025-10-18",
+        "day_of_week": "토요일",
+        "temp_min": 16,
+        "temp_max": 23,
+        "sky_am": "맑음",
+        "sky_pm": "맑음",
+        "precip_prob_am": 0,
+        "precip_prob_pm": 0
+      }
+    ],
+    "weather_alerts": [
+      {
+        "content": "[기상특보] o 현재 부산광역시에 발효된 기상특보가 없습니다.",
+        "announcement_time": "202510122200"
+      }
+    ]
+  }
