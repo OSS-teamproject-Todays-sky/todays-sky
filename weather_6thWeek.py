@@ -3,9 +3,9 @@ import json
 from datetime import datetime, timedelta
 
 # --- [1. API 키 및 고정 변수 설정] ---
-SHORT_TERM_API_KEY = "1o00nZt0TaGNNJ2bdH2hZw"
+SHORT_TERM_API_KEY = "UXVkhCwOSDi1ZIQsDtg4OA"
 MID_TERM_API_KEY = "1o00nZt0TaGNNJ2bdH2hZw"
-WEATHER_ALERT_API_KEY = "1o00nZt0TaGNNJ2bdH2hZw"
+WEATHER_ALERT_API_KEY = "UXVkhCwOSDi1ZIQsDtg4OA"
 
 NX, NY = 98, 75
 MID_TERM_REG_ID = "11H20201"
@@ -141,13 +141,13 @@ if __name__ == "__main__":
     
     final_data = None
     if IS_DEV_MODE:
-        # (개발 모드 로직은 동일)
-        pass
+        print("--- [개발 모드] 더미 데이터를 사용합니다. ---")
+        with open('dummy_data.json', 'r', encoding='utf-8') as f:
+            final_data = json.load(f)
     else:
         print("--- [실서버 모드] 실제 API를 호출합니다. ---")
         short_term_raw_data = get_short_term_forecast()
         
-        # 수정된 함수를 호출합니다.
         current_weather_data = process_short_term_for_current(short_term_raw_data)
         weekly_from_short_term = process_short_term_for_weekly(short_term_raw_data)
         
@@ -160,5 +160,4 @@ if __name__ == "__main__":
         
         final_data = {"current_weather": current_weather_data, "weekly_forecast": final_weekly_forecast, "weather_alerts": weather_alert_data}
 
-    print("--- [최종 통합 날씨 데이터 (Final Combined Weather Data)] ---")
     print(json.dumps(final_data, indent=2, ensure_ascii=False))
