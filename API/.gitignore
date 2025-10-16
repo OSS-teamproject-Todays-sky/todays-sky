@@ -1,0 +1,15 @@
+# API 키 및 비밀 설정 파일
+.env
+secrets.json
+
+# 파이썬 가상환경 폴더
+venv/
+.venv/
+
+# 파이썬 캐시 파일
+__pycache__/
+*.pyc
+
+# IDE 설정 파일 (VSCode, PyCharm 등)
+.vscode/
+.idea/
