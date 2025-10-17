@@ -188,17 +188,28 @@ def process_weather_alerts(text_data):
 
 # --- [4. 메인 실행 로직] ---
 if __name__ == "__main__":
-    print("---[실서버 모드] 실제 API를 호출합니다. ---")
-    short_term_raw_data = get_short_term_forecast()
-    mid_temp_raw, mid_land_raw = get_mid_term_forecast()
-    weather_alert_raw_data = get_weather_alerts()
+    IS_DEV_MODE = False # 실제 API를 사용하려면 False로 변경
+    final_data = None
+
+    if IS_DEV_MODE:
+        print("--- [개발 모드] 더미 데이터를 사용합니다. ---")
+        dummy_path = os.path.join(os.path.dirname(__file__), 'dummy_data.json')
+        with open(dummy_path, 'r', encoding='utf-8') as f:
+            final_data = json.load(f)
     
-    current_weather_data = process_short_term_for_current(short_term_raw_data)
-    weekly_from_short_term = process_short_term_for_weekly(short_term_raw_data)
-    weekly_from_mid_term = process_mid_term_data(mid_temp_raw, mid_land_raw)
-    weather_alert_data = process_weather_alerts(weather_alert_raw_data)
+    else:
+
+        print("---[실서버 모드] 실제 API를 호출합니다. ---")
+        short_term_raw_data = get_short_term_forecast()
+        mid_temp_raw, mid_land_raw = get_mid_term_forecast()
+        weather_alert_raw_data = get_weather_alerts()
     
-    final_weekly_forecast = weekly_from_short_term + weekly_from_mid_term
-    final_data = {"current_weather": current_weather_data, "weekly_forecast": final_weekly_forecast, "weather_alerts": weather_alert_data}
+        current_weather_data = process_short_term_for_current(short_term_raw_data)
+        weekly_from_short_term = process_short_term_for_weekly(short_term_raw_data)
+        weekly_from_mid_term = process_mid_term_data(mid_temp_raw, mid_land_raw)
+        weather_alert_data = process_weather_alerts(weather_alert_raw_data)
+    
+        final_weekly_forecast = weekly_from_short_term + weekly_from_mid_term
+        final_data = {"current_weather": current_weather_data, "weekly_forecast": final_weekly_forecast, "weather_alerts": weather_alert_data}
         
     print(json.dumps(final_data, indent=2, ensure_ascii=False))
