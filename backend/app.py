@@ -12,38 +12,37 @@ from API.weather_6thWeek import (
 )
 
 app = Flask(__name__)
-CORS(app)  # CORS 허용
+# -----------------------------
+# [1] 단기 예보
+# -----------------------------
+@app.route("/api/weather/current")
+def get_current_weather():
+    res = get_short_term_forecast()
+    data = process_short_term_for_current(res)
+    return jsonify(data)
 
-@app.route('/api/weather')
-def get_weather():
-    """최종 통합 날씨 데이터를 JSON 형태로 반환하는 Flask 엔드포인트"""
-    try:
-        # 1️⃣ 단기예보 (현재/3일)
-        short_term_raw = get_short_term_forecast()
-        current_weather = process_short_term_for_current(short_term_raw)
-        weekly_short_term = process_short_term_for_weekly(short_term_raw)
+# -----------------------------
+# [2] 중기 예보
+# -----------------------------
+@app.route("/api/weather/weekly")
+def get_weekly_weather():
+    short_res = get_short_term_forecast()
+    mid_temp, mid_land = get_mid_term_forecast()
 
-        # 2️⃣ 중기예보 (4~7일)
-        mid_temp_raw, mid_land_raw = get_mid_term_forecast()
-        weekly_mid_term = process_mid_term_data(mid_temp_raw, mid_land_raw)
+    weekly_short = process_short_term_for_weekly(short_res)
+    weekly_mid = process_mid_term_data(mid_temp, mid_land)
 
-        # 3️⃣ 기상특보
-        weather_alert_raw = get_weather_alerts()
-        weather_alerts = process_weather_alerts(weather_alert_raw)
+    return jsonify(weekly_short + weekly_mid)
 
-        # 4️⃣ 최종 데이터 통합
-        final_data = {
-            "current_weather": current_weather,
-            "weekly_forecast": weekly_short_term + weekly_mid_term,
-            "weather_alerts": weather_alerts
-        }
-
-        return jsonify(final_data)
-    
-    except Exception as e:
-        print(f"❌ 서버 처리 중 오류 발생: {e}")
-        return jsonify({"error": "서버 내부 오류가 발생했습니다."}), 500
+# -----------------------------
+# [3] 기상특보
+# -----------------------------
+@app.route("/api/weather/alerts")
+def get_alerts():
+    alert_text = get_weather_alerts()
+    data = process_weather_alerts(alert_text)
+    return jsonify(data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
