@@ -1,188 +1,318 @@
-import styled, { keyframes } from 'styled-components';
+// import styled, { createGlobalStyle, keyframes } from 'styled-components';
 
-// 나머지 스타일(fadeIn, WeatherContainer, AppHeader 등)은 이전과 동일합니다.
-// ... (이전 코드와 동일)
+// // --- Global Styles & Animations (이전과 동일) ---
+// export const GlobalStyle = createGlobalStyle`
+//   body {
+//     margin: 0;
+//     background-color: #0d1a26;
+//     color: #e0e0e0;
+//     font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+//   }
+// `;
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+// const fadeIn = keyframes`
+//   from { opacity: 0; transform: translateY(20px); }
+//   to { opacity: 1; transform: translateY(0); }
+// `;
 
-export const WeatherContainer = styled.div`
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: linear-gradient(135deg, #6dd5ed, #2193b0);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
-`;
+// const shootingStar = keyframes`
+//   0% { transform: translateX(150vw) translateY(-50vh); opacity: 1; }
+//   100% { transform: translateX(-50vw) translateY(50vh); opacity: 0; }
+// `;
 
-export const AppHeader = styled.header`
-  text-align: center;
-  margin-bottom: 2rem;
 
-  h1 {
+// // --- Styled Components (카드 형식 제거 및 그래프 스타일 추가) ---
+
+// export const WeatherPageContainer = styled.div`
+//   position: relative;
+//   max-width: 900px;
+//   min-height: 100vh;
+//   margin: auto;
+//   padding: 2rem 3rem;
+//   box-sizing: border-box;
+//   overflow: hidden;
+//   animation: ${fadeIn} 0.8s ease-out;
+// `;
+
+// export const StarryBackground = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background: #0d1a26 url('https://www.transparenttextures.com/patterns/stardust.png');
+//   z-index: -1;
+
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     width: 2px;
+//     height: 2px;
+//     background: white;
+//     border-radius: 50%;
+//     box-shadow: 0 0 5px 2px white;
+//     animation: ${shootingStar} 15s linear infinite;
+//     animation-delay: 2s;
+//   }
+// `;
+
+// // --- CurrentWeatherSection, WeeklyForecastSection 등 이전 스타일은 그대로 사용 ---
+// // ... (이전 코드와 동일한 부분)
+// export const CurrentWeatherSection = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-start;
+//   padding-bottom: 2rem;
+//   margin-bottom: 2rem;
+// `;
+
+// export const CurrentTempDetails = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 1rem;
+
+//   img { width: 80px; height: 80px; }
+// `;
+
+// export const CurrentTemp = styled.span`
+//   font-size: 5rem;
+//   font-weight: 200;
+//   position: relative;
+
+//   &:after {
+//     content: '°C';
+//     font-size: 1.5rem;
+//     position: absolute;
+//     top: 1.5rem;
+//     right: -1.5rem;
+//     color: #a0a0a0;
+//   }
+// `;
+
+// export const CurrentInfo = styled.div`
+//   text-align: right;
+
+//   h2 { margin: 0; font-size: 1.8rem; font-weight: 600; }
+//   p { margin: 0.2rem 0; color: #a0a0a0; font-size: 1rem; }
+// `;
+
+// export const WeeklyForecastSection = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(6, 1fr);
+//   gap: 1.5rem;
+//   text-align: center;
+//   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+//   padding-bottom: 2rem;
+//   margin-bottom: 2rem;
+// `;
+
+// export const DayForecast = styled.div<{ active?: boolean }>`
+//   padding: 1rem 0.5rem;
+//   border-bottom: ${props => props.active ? '3px solid white' : '3px solid transparent'};
+//   transition: background-color 0.3s ease;
+
+//   p { margin: 0; font-size: 1rem; }
+//   .day-name { font-weight: 600; margin-bottom: 1rem; }
+//   img { width: 50px; height: 50px; margin-bottom: 1rem; }
+//   .temps { color: #a0a0a0; }
+// `;
+// // --- 그래프 스타일 추가 ---
+
+// export const GraphSection = styled.div`
+//   position: relative;
+//   height: 150px;
+// `;
+
+// export const YAxisLabels = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   color: #a0a0a0;
+//   font-size: 0.9rem;
+  
+//   span {
+//     display: block;
+//     position: relative;
+//     padding-right: 10px;
+    
+//     &:after {
+//       content: '';
+//       position: absolute;
+//       right: 0;
+//       top: 50%;
+//       width: 100vw;
+//       border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+//     }
+//   }
+// `;
+
+// export const GraphContainer = styled.svg`
+//   width: 100%;
+//   height: 100%;
+//   overflow: visible;
+// `;
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
+
+// --- Global Styles (기본 배경색과 폰트만 설정) ---
+export const GlobalStyle = createGlobalStyle`
+  body {
     margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: #0d1a26;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   }
 `;
 
-export const SearchBox = styled.form`
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2.5rem;
+// --- Animations (변경 없음) ---
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
-export const SearchInput = styled.input`
-  flex-grow: 1;
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  transition: background-color 0.3s;
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  &:focus {
-    outline: none;
-    background-color: rgba(255, 255, 255, 0.3);
-  }
+const shootingStar = keyframes`
+  0% { transform: translateX(150vw) translateY(-50vh); opacity: 1; }
+  100% { transform: translateX(-50vw) translateY(50vh); opacity: 0; }
 `;
 
-export const SearchButton = styled.button`
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #2193b0;
-  background-color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+// --- StarryBackground (화면 전체를 덮도록 수정) ---
+export const StarryBackground = styled.div`
+  position: fixed; /* 화면에 고정 */
+  top: 0;
+  left: 0;
+  width: 100vw; /* 화면 너비 전체 */
+  height: 100vh; /* 화면 높이 전체 */
+  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+  z-index: -1; /* 모든 콘텐츠 뒤로 보내기 */
 
-  &:hover {
-    background-color: #f0f0f0;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 2px white;
+    animation: ${shootingStar} 15s linear infinite;
+    animation-delay: 2s;
   }
 `;
 
-export const ResultsContainer = styled.div`
+// --- Styled Components ---
+export const WeatherPageContainer = styled.div`
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 2rem 3rem;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  animation: ${fadeIn} 0.5s ease-in-out;
+  animation: ${fadeIn} 0.8s ease-out;
 `;
 
-export const CurrentWeatherSection = styled.section`
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 2rem;
-  border-radius: 15px;
-  text-align: center;
-  backdrop-filter: blur(10px);
+// --- 나머지 스타일 컴포넌트는 이전과 동일 ---
+// ... (CurrentWeatherSection, WeeklyForecastSection, GraphSection 등)
+export const CurrentWeatherSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
 `;
 
-export const CurrentDetails = styled.div`
+export const CurrentTempDetails = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-
-  h2 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 600;
-  }
-
-  img {
-    width: 100px;
-    height: 100px;
-  }
-
-  p {
-    font-size: 1.2rem;
-    margin: 0;
-  }
+  gap: 1rem;
+  img { width: 80px; height: 80px; }
 `;
 
 export const CurrentTemp = styled.span`
-  font-size: 4rem;
-  font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-`;
-
-// --- 아래부터 변경된 부분 ---
-
-// WeeklyForecastSection -> HourlyForecastSection 으로 이름 변경 및 스타일 수정
-export const HourlyForecastSection = styled.section`
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 1.5rem;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-
-  h3 {
-    margin-top: 0;
-    text-align: center;
-    margin-bottom: 1.5rem;
+  font-size: 5rem;
+  font-weight: 200;
+  position: relative;
+  &:after {
+    content: '°C';
     font-size: 1.5rem;
-    font-weight: 600;
+    position: absolute;
+    top: 1.5rem;
+    right: -1.5rem;
+    color: #a0a0a0;
   }
 `;
 
-// ForecastGrid -> Horizontally scrolling Flexbox로 변경
-export const ForecastContainer = styled.div`
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding: 0.5rem;
-  /* 스크롤바 디자인 */
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-  }
-`;
-
-// ForecastCard 스타일 약간 수정
-export const ForecastCard = styled.div`
-  flex: 0 0 100px; /* 카드가 줄어들지 않고 고정된 너비를 갖도록 설정 */
+export const CurrentInfo = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.5rem;
-  padding: 1rem;
+
+  h2 { margin: 0; font-size: 1.8rem; font-weight: 600; }
+  p { margin: 0; color: #a0a0a0; font-size: 1rem; }
+  .location { font-weight: 500; }
+`;
+
+export const WeeklyForecastSection = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+`;
+
+export const DayForecast = styled.div<{ active?: boolean }>`
+  padding: 1rem 0.5rem;
   border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background: ${props => props.active ? 'rgba(255, 255, 255, 0.1)' : 'transparent'};
+  transition: background-color 0.3s ease;
 
-  h4 {
-    margin: 0;
-    font-weight: 600;
-    font-size: 1rem;
-  }
+  p { margin: 0; font-size: 1rem; }
+  .day-name { font-weight: 600; margin-bottom: 1rem; }
+  img { width: 50px; height: 50px; margin-bottom: 1rem; }
+  .temps { color: #a0a0a0; }
+`;
 
-  img {
-    width: 50px;
-    height: 50px;
+export const GraphSection = styled.div`
+  position: relative;
+  height: 150px;
+`;
+
+export const YAxisLabels = styled.div`
+  position: absolute;
+  top: 0;
+  left: -15px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  
+  span {
+    display: block;
+    position: relative;
+    padding-right: 10px;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 100vw;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+    }
   }
 `;
 
-// ForecastTemps -> 단일 온도를 표시하도록 Temp로 변경
-export const Temp = styled.span`
-  font-weight: 600;
-  font-size: 1.2rem;
+export const GraphContainer = styled.svg`
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 `;
