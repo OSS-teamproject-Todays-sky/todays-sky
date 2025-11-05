@@ -1,35 +1,98 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect }from 'react';
 import * as Styled from './WeatherPage.styles';
 
-interface DayData {
-  day: string;
-  icon: string;
-  max: number;
-  min: number;
-  description: string;
-  humidity: number; // 습도 정보 추가
-  wind: number;    // 풍속 정보 추가
+interface CurrentWeather {
+  temp_min: string;
+  temp_max: string;
+  temperature: string;
+  sky: string;
+  precip_type: string;
+  precip_prob: string;
+  humidity: string;
 }
+
+interface DailyForecast {
+  date: string;
+  day_of_week: string;
+  temp_min: number;
+  temp_max: number;
+  sky_am: string;
+  sky_pm: string;
+  precip_prob_am:number;
+  precip_prob_pm:number;
+}
+
+interface WeatherAlert {
+  content: string;
+  announcement_time: string;
+}
+
+interface WeatherData {
+  current_weather: CurrentWeather;
+  weekly_forecast: DailyForecast[];
+  weather_alerts: WeatherAlert[];
+}
+
+const getIconForSky = (sky: string | undefined): string => {
+  if (!sky) return '01d'; // 기본값 (맑음)
+  if (sky.includes('맑음')) return '01d';
+  if (sky.includes('구름많음')) return '03d';
+  if (sky.includes('흐림')) return '04d';
+  if (sky.includes('비')) return '10d';
+  if (sky.includes('눈')) return '13d';
+  if (sky.includes('소나기')) return '09d';
+  if (sky.includes('이슬비')) return '09d';
+  if (sky.includes('뇌우')) return '11d';
+  return '01d';
+};
 
 function WeatherPage() {
   // ... (데이터 및 그래프 로직은 이전과 동일)
-  const weeklyData = [
-    { day: '화', icon: '10d', max: 21, min: 18, description: '가끔 비가 내리겠습니다.', humidity: 85, wind: 4},
-    { day: '수', icon: '02d', max: 23, min: 19, description: '가끔 비가 내리겠습니다.', humidity: 85, wind: 4 },
-    { day: '목', icon: '09d', max: 23, min: 19, description: '가끔 비가 내리겠습니다.', humidity: 85, wind: 4 },
-    { day: '금', icon: '01d', max: 24, min: 20, description: '가끔 비가 내리겠습니다.', humidity: 85, wind: 4 },
-    { day: '토', icon: '03d', max: 25, min: 17, description: '가끔 비가 내리겠습니다.', humidity: 85, wind: 4 },
-    { day: '일', icon: '04d', max: 21, min: 14, description: '가끔 비가 내리겠습니다.', humidity: 85, wind: 4 },
-  ];
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [selectedDay, setSelectedDay] = useState<DailyForecast | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const [selectedDay, setSelectedDay] = useState<DayData>(weeklyData[0]);
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const temperatures = weeklyData.map(d => d.max);
-  const minTemp = Math.min(...temperatures) - 2;
-  const maxTemp = Math.max(...temperatures) + 2;
-  const tempRange = maxTemp - minTemp;
+        const response = await fetch('/api/weather');
+        if (!response.ok) {
+          throw new Error('날씨 데이터를 불러오는 데 실패했습니다.');
+        }
+        const data: WeatherData = await response.json();
+        setWeatherData(data);
+        setSelectedDay(data.weekly_forecast[0]);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchWeatherData();
+  } , []);
+
+  const temperatures = weatherData ? weatherData.weekly_forecast.map(d => Number(d.temp_max)) : [];
+  
   const getCoordinates = (temps: number[]) => {
+    if(temps.length <2) {
+      return [{ x: 50, y: 50 }];
+    }
+    const minTemp = Math.min(...temps) - 2;
+    const maxTemp = Math.max(...temps) + 2;
+    const tempRange = maxTemp - minTemp;
+
+    if (tempRange === 0) {
+      return temps.map((temp, i) => ({
+        x: (i / (temps.length - 1)) * 100,
+        y: 50 // 모든 y값을 중앙으로
+      }));
+    }
+    
     return temps.map((temp, i) => {
       const x = (i / (temps.length - 1)) * 100;
       const y = 100 - ((temp - minTemp) / tempRange) * 100;
@@ -40,6 +103,38 @@ function WeatherPage() {
   const points = getCoordinates(temperatures);
   const pathData = points.map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`)).join(' ');
 
+  const minTemp = temperatures.length ? Math.min(...temperatures) - 2 : 0;
+  const maxTemp = temperatures.length ? Math.max(...temperatures) + 2 : 0;
+  const tempRange = maxTemp - minTemp;
+
+  if (loading) {
+    return (
+      <>
+        <Styled.GlobalStyle />
+        <Styled.StarryBackground />
+        <Styled.WeatherPageContainer style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <h2>날씨 정보를 불러오는 중...</h2>
+        </Styled.WeatherPageContainer>
+      </>
+    );
+  }
+  if (error) {
+    return (
+      <>
+        <Styled.GlobalStyle />
+        <Styled.StarryBackground />
+        <Styled.WeatherPageContainer style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <h2>오류가 발생했습니다: {error}</h2>
+          <p>백엔드 서버가 켜져 있는지, API가 정상인지 확인해주세요.</p>
+        </Styled.WeatherPageContainer>
+      </>
+    );
+  }
+  if (!weatherData) return null;
+  
+  const { current_weather, weekly_forecast, weather_alerts } = weatherData;
+  const currentIcon = getIconForSky(current_weather.sky);
+  
   return (
     <>
       <Styled.GlobalStyle />
@@ -48,22 +143,24 @@ function WeatherPage() {
       <Styled.WeatherPageContainer>
         <Styled.CurrentWeatherSection>
           <Styled.CurrentTempDetails>
-            <img src={`http://openweathermap.org/img/wn/02n@4x.png`} alt="약간의 구름" />
-            <Styled.CurrentTemp>20</Styled.CurrentTemp>
+            <img src={`http://openweathermap.org/img/wn/${currentIcon}@4x.png`} alt={current_weather.sky} />
+            <Styled.CurrentTemp>{Math.round(Number(current_weather.temperature))}</Styled.CurrentTemp>
           </Styled.CurrentTempDetails>
           <Styled.CurrentInfo>
-            <h2>약간의 구름</h2>
-            <p>21° / 18°</p>
+            <h2>{current_weather.sky}</h2>
+            <p>{current_weather.temp_max}° / {current_weather.temp_min}°</p>
           </Styled.CurrentInfo>
           <Styled.CurrentInfo>
+            {/* TODO: 이 정보는 백엔드 JSON에 추가해야 함 */}
             <p className="location">Gwangbok-dong, Jung-gu</p>
             <p>(수요일) 오전 3:03</p>
           </Styled.CurrentInfo>
         </Styled.CurrentWeatherSection>
+
         <Styled.GraphSection>
-            <Styled.YAxisLabels>
+          <Styled.YAxisLabels>
             <span>{maxTemp}°</span>
-            <span>{Math.round(minTemp + tempRange / 2)}°</span>
+            <span>{tempRange === 0 ? maxTemp : Math.round(minTemp + tempRange / 2)}°</span>
             <span>{minTemp}°</span>
           </Styled.YAxisLabels>
           <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -73,29 +170,40 @@ function WeatherPage() {
             ))}
           </Styled.GraphContainer>
         </Styled.GraphSection>
+        {weather_alerts.length > 0 && !weather_alerts[0].content.includes("발효된 특보가 없습니다") && (
+          <Styled.WeatherAlertSection>
+            <h3>기상 특보</h3>
+            <ul>
+              {weather_alerts.map((alert, index) => (
+                <li key={index}>{alert.content}</li>
+              ))}
+            </ul>
+          </Styled.WeatherAlertSection>
+        )}
         <Styled.WeeklyForecastSection>
-            {weeklyData.map((day, index) => (
-            <Styled.DayForecast 
-              key={index} 
-              active={selectedDay.day === day.day}
-              onClick={() => setSelectedDay(day)}
-              >
-              <p className="day-name">{day.day}</p>
-              <img src={`http://openweathermap.org/img/wn/${day.icon}@2x.png`} alt="" />
-              <p>{day.max}°</p>
-              <p className="temps">{day.min}°</p>
-            </Styled.DayForecast>
-          ))}
+            {weekly_forecast.map((day) => {
+              const dayIcon = getIconForSky(day.sky_am);
+              return (
+                <Styled.DayForecast 
+                  key={day.date} 
+                  active={selectedDay?.date === day.date}
+                  onClick={() => setSelectedDay(day)}
+                >
+                  <p className="day-name">{day.day_of_week.charAt(0)}</p>
+                  <img src={`http://openweathermap.org/img/wn/${dayIcon}@2x.png`} alt="" />
+                  <p>{Math.round(Number(day.temp_max))}°</p>
+                  <p className="temps">{Math.round(Number(day.temp_min))}°</p>
+                </Styled.DayForecast>
+              );
+            })}
         </Styled.WeeklyForecastSection>
         {selectedDay && (
           <Styled.DetailedInfoSection>
-            <h3>{selectedDay.day}요일 상세 예보</h3>
+            <h3>{selectedDay.day_of_week} 상세 예보</h3>
             <Styled.DetailContent>
-              <img src={`http://openweathermap.org/img/wn/${selectedDay.icon}@2x.png`} alt={selectedDay.description} />
               <Styled.DetailText>
-                <p>{selectedDay.description}</p>
-                <p>예상 기온: <span>{selectedDay.min}° / {selectedDay.max}°</span></p>
-                <p>습도: <span>{selectedDay.humidity}%</span> &nbsp;&nbsp; 풍속: <span>{selectedDay.wind}m/s</span></p>
+                <p>오전: <span>{selectedDay.sky_am} (강수: {selectedDay.precip_prob_am}%)</span></p>
+                <p>오후: <span>{selectedDay.sky_pm} (강수: {selectedDay.precip_prob_pm}%)</span></p>
               </Styled.DetailText>
             </Styled.DetailContent>
           </Styled.DetailedInfoSection>
