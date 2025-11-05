@@ -202,3 +202,29 @@ export const DetailText = styled.div`
     color: #a0a0a0;
   }
 `;
+
+export const WeatherAlertSection = styled.section`
+  background: rgba(192, 57, 43, 0.2);
+  border: 1px solid rgba(231, 76, 60, 0.5);
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  margin-top: 1rem;
+  animation: ${fadeIn} 0.5s ease-out;
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    color: #e74c3c;
+    font-size: 1.1rem;
+  }
+  
+  ul {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  li {
+    font-size: 0.95rem;
+    color: #f0f0f0;
+    line-height: 1.5;
+  }
+`;
