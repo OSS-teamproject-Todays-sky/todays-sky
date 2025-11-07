@@ -7,10 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
-LAT = 35.1384  # 부산 대연동 위도
-LON = 129.1066 # 부산 대연동 경도
+#대연동의 좌표
+LAT = 35.1384
+LON = 129.1066
 
-# OpenWeatherMap 날씨 코드 -> 한국어 번역 딕셔너리
+
 weather_translate = {
     "Clear": "맑음",
     "Clouds": "구름많음",
@@ -38,12 +39,12 @@ aqi_translate = {
     5: "위험",
 }
 
-def get_weather_data():
+def get_weather_data(lat=LAT, lon=LON):
     """날씨 (One Call API 3.0) 데이터를 가져옵니다."""
     url = "https://api.openweathermap.org/data/3.0/onecall"
     params = {
-        "lat": LAT,
-        "lon": LON,
+        "lat": lat,
+        "lon": lon,
         "appid": API_KEY,
         "units": "metric",
         "lang": "kr",
@@ -53,13 +54,12 @@ def get_weather_data():
     res.raise_for_status()
     return res.json()
 
-def get_air_pollution_data():
+def get_air_pollution_data(lat=LAT, lon=LON):
     """대기 오염 (Air Pollution API 2.5) 데이터를 가져옵니다."""
-    # 미세먼지 API는 아직 2.5 경로를 사용합니다.
     url = "http://api.openweathermap.org/data/2.5/air_pollution"
     params = {
-        "lat": LAT,
-        "lon": LON,
+        "lat": lat,
+        "lon": lon,
         "appid": API_KEY
     }
     res = requests.get(url, params=params, timeout=10)
@@ -71,15 +71,17 @@ def process_data(data):
     curr = data.get("current", {})
     daily = data.get("daily", [])
 
-    # 1. 현재 날씨
+    # 1. 현재 날씨 (Daily[0]에서 가져옴)
     weather = curr.get("weather", [{}])[0]
     sky = weather_translate.get(weather.get("main"), weather.get("description", "정보없음"))
     temperature = curr.get("temp")
     humidity = curr.get("humidity")
+    
+    # daily[0]는 현재 날짜의 예보입니다.
     temp_min = daily[0].get("temp", {}).get("min") if daily else None
     temp_max = daily[0].get("temp", {}).get("max") if daily else None
     
-    # 강수/강설 유형 판단 (기존 로직 유지)
+    # 강수/강설 유형 판단
     weather_id = weather.get("id", 0)
     rain = curr.get("rain")
     snow = curr.get("snow")
@@ -103,10 +105,11 @@ def process_data(data):
         "humidity": str(humidity) if humidity is not None else "정보없음"
     }
 
-    # 2. 주간 예보
+    # 2. 주간 예보 (내일부터 6일간의 예보)
     days_of_week = ['월', '화', '수', '목', '금', '토', '일']
     weekly_forecast = []
-    for day in daily[:7]:
+    # daily[1:7] -> 내일부터 6일간의 데이터
+    for day in daily[1:7]: 
         dt = datetime.fromtimestamp(day.get("dt"))
         day_of_week = f"{days_of_week[dt.weekday()]}요일"
         temp_info = day.get("temp", {})
@@ -114,7 +117,7 @@ def process_data(data):
         sky_desc = weather_translate.get(sky_main, sky_main)
 
         precip_prob_am = int(round(day.get("pop", 0) * 100))
-        precip_prob_pm = precip_prob_am  # 실제 api에서 따로 분리값 없으니 같게 처리
+        precip_prob_pm = precip_prob_am
         weekly_forecast.append({
             "date": dt.strftime("%Y-%m-%d"),
             "day_of_week": day_of_week,
@@ -126,22 +129,17 @@ def process_data(data):
             "precip_prob_pm": precip_prob_pm
         })
 
-    # 3. 기상특보
+   # 3. 기상특보
     weather_alerts = []
     alerts = data.get("alerts")
     if alerts:
         for alert in alerts:
-            announcement_time = ""
-            if alert.get("start"):
-                announcement_time = datetime.fromtimestamp(alert.get("start")).strftime("%Y%m%d%H%M")
             weather_alerts.append({
-                "content": alert.get("event", "특보 정보 없음"),
-                "announcement_time": announcement_time
+                "content": alert.get("event", "특보 정보 없음")
             })
     else:
         weather_alerts.append({
-            "content": "[기상특보] 현재 발효된 특보가 없습니다.",
-            "announcement_time": ""
+            "content": "[기상특보] 현재 발효된 특보가 없습니다."
         })
 
     return {
@@ -152,7 +150,6 @@ def process_data(data):
 
 def process_air_pollution_data(data):
     """Air Pollution API 데이터(미세먼지)를 처리합니다."""
-    # 현재 데이터는 'list'의 첫 번째 요소에 있습니다.
     current_aqi = data.get("list", [{}])[0]
     
     if not current_aqi:
@@ -180,7 +177,6 @@ def process_air_pollution_data(data):
 
 
 if __name__ == "__main__":
-    # 1. 날씨 데이터 가져오기 및 처리
     weather_data = get_weather_data()
     result = process_data(weather_data)
 
@@ -191,7 +187,6 @@ if __name__ == "__main__":
         # 최종 결과에 통합
         result["air_pollution"] = air_pollution_result
     except requests.exceptions.HTTPError as e:
-        # API 키 문제나 서버 응답 오류 처리
         print(f"Error fetching air pollution data: {e}. Check your API key and permissions.")
         result["air_pollution"] = {"error": "미세먼지 데이터를 가져오는 중 오류 발생"}
     except Exception as e:
