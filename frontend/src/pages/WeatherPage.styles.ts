@@ -130,6 +130,7 @@ export const DayForecast = styled.div<{ active?: boolean }>`
 export const GraphSection = styled.div`
   position: relative;
   height: 150px;
+  margin-bottom: 3rem;
 `;
 
 export const YAxisLabels = styled.div`
