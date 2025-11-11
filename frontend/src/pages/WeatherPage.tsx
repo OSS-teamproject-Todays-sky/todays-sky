@@ -1,37 +1,6 @@
 import React, { useState, useEffect }from 'react';
 import * as Styled from './WeatherPage.styles';
-
-interface CurrentWeather {
-  temp_min: string;
-  temp_max: string;
-  temperature: string;
-  sky: string;
-  precip_type: string;
-  precip_prob: string;
-  humidity: string;
-}
-
-interface DailyForecast {
-  date: string;
-  day_of_week: string;
-  temp_min: number;
-  temp_max: number;
-  sky_am: string;
-  sky_pm: string;
-  precip_prob_am:number;
-  precip_prob_pm:number;
-}
-
-interface WeatherAlert {
-  content: string;
-  announcement_time: string;
-}
-
-interface WeatherData {
-  current_weather: CurrentWeather;
-  weekly_forecast: DailyForecast[];
-  weather_alerts: WeatherAlert[];
-}
+import type { WeatherData, DailyForecast } from '../types/weather';
 
 const getIconForSky = (sky: string | undefined): string => {
   if (!sky) return '01d'; // 기본값 (맑음)
@@ -52,6 +21,7 @@ function WeatherPage() {
   const [selectedDay, setSelectedDay] = useState<DailyForecast | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -75,6 +45,33 @@ function WeatherPage() {
 
     fetchWeatherData();
   } , []);
+
+  useEffect(() => {
+    // 1초(1000ms)마다 currentTime 상태를 현재 시간으로 업데이트합니다.
+    const timerId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 30000);
+
+    // 컴포넌트가 사라질 때 타이머를 정리(cleanup)합니다. (메모리 누수 방지)
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+  const formatCurrentTime = (date: Date) => {
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  const dayName = days[date.getDay()];
+  
+  const options: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // '오전/오후' 사용
+  };
+  
+  const timeString = date.toLocaleTimeString('ko-KR', options);
+  
+  return `(${dayName}요일) ${timeString}`;
+};
 
   const temperatures = weatherData ? weatherData.weekly_forecast.map(d => Number(d.temp_max)) : [];
   
@@ -152,9 +149,19 @@ function WeatherPage() {
           </Styled.CurrentInfo>
           <Styled.CurrentInfo>
             {/* TODO: 이 정보는 백엔드 JSON에 추가해야 함 */}
-            <p className="location">Gwangbok-dong, Jung-gu</p>
-            <p>(수요일) 오전 3:03</p>
+            <p className="location">Daeyeon-dong, Nam-gu</p>
+            <p>{formatCurrentTime(currentTime)}</p>
           </Styled.CurrentInfo>
+          {weather_alerts.length > 0 && !weather_alerts[0].content.includes("발효된 특보가 없습니다") && (
+          <Styled.WeatherAlertSection>
+            <h3>기상 특보</h3>
+            <ul>
+              {weather_alerts.map((alert, index) => (
+                <li key={index}>{alert.content}</li>
+              ))}
+            </ul>
+          </Styled.WeatherAlertSection>
+        )}
         </Styled.CurrentWeatherSection>
 
         <Styled.GraphSection>
@@ -170,16 +177,7 @@ function WeatherPage() {
             ))}
           </Styled.GraphContainer>
         </Styled.GraphSection>
-        {weather_alerts.length > 0 && !weather_alerts[0].content.includes("발효된 특보가 없습니다") && (
-          <Styled.WeatherAlertSection>
-            <h3>기상 특보</h3>
-            <ul>
-              {weather_alerts.map((alert, index) => (
-                <li key={index}>{alert.content}</li>
-              ))}
-            </ul>
-          </Styled.WeatherAlertSection>
-        )}
+        
         <Styled.WeeklyForecastSection>
             {weekly_forecast.map((day) => {
               const dayIcon = getIconForSky(day.sky_am);
