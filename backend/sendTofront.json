@@ -1,0 +1,97 @@
+{
+  "air_pollution": {
+    "aqi": "2",
+    "aqi_status": "보통",
+    "co": "153.45",
+    "no2": "9.19",
+    "pm10": "7.55",
+    "pm2_5": "4.49"
+  },
+  "current_weather": {
+    "humidity": "61",
+    "precip_prob": "0",
+    "precip_type": "강수없음",
+    "sky": "맑음",
+    "temp_max": "15.9",
+    "temp_min": "8.0",
+    "temperature": "8.0"
+  },
+  "weather_alerts": [
+    {
+      "announcement_time": "",
+      "content": "[기상특보] 현재 발효된 특보가 없습니다."
+    }
+  ],
+  "weekly_forecast": [
+    {
+      "date": "2025-11-11",
+      "day_of_week": "화요일",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "구름많음",
+      "sky_pm": "구름많음",
+      "temp_max": 15.9,
+      "temp_min": 8
+    },
+    {
+      "date": "2025-11-12",
+      "day_of_week": "수요일",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "구름많음",
+      "sky_pm": "구름많음",
+      "temp_max": 16.3,
+      "temp_min": 10.7
+    },
+    {
+      "date": "2025-11-13",
+      "day_of_week": "목요일",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "구름많음",
+      "sky_pm": "구름많음",
+      "temp_max": 18.7,
+      "temp_min": 12.7
+    },
+    {
+      "date": "2025-11-14",
+      "day_of_week": "금요일",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "temp_max": 17.2,
+      "temp_min": 12.4
+    },
+    {
+      "date": "2025-11-15",
+      "day_of_week": "토요일",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "temp_max": 17,
+      "temp_min": 12.4
+    },
+    {
+      "date": "2025-11-16",
+      "day_of_week": "일요일",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "temp_max": 18.1,
+      "temp_min": 12.9
+    },
+    {
+      "date": "2025-11-17",
+      "day_of_week": "월요일",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "구름많음",
+      "sky_pm": "구름많음",
+      "temp_max": 10.8,
+      "temp_min": 6.3
+    }
+  ]
+}
