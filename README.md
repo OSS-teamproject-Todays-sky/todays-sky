@@ -1,50 +1,176 @@
-# 세얼간이 팀 프로젝트: 오늘의 하늘
+# 오늘의 하늘
 
-## 1. 팀 소개  
-- 팀명: 세얼간이  
-- 팀원 및 역할:  
-  - 권민준 (리더) - GitHub ID: funky-jun 
-  - 권상혁 (커미터) - GitHub ID: pttnekh  
-  - 박성제 (메인테이너) - GitHub ID: seongje973  
+간단하고 직관적인 UI로 도시별 날씨 정보를 제공하는 웹 서비스입니다.
 
-## 2. 프로젝트 주제 및 개요  
-- 프로젝트명: 오늘의 하늘  
-- 배경 및 문제: 기존 날씨 서비스는 광고 과다 및 한눈에 보기 어려운 UI로 대학생 및 일반 사용자가 원하는 도시 날씨 정보를 간단히 확인하기 어려움  
-- 핵심 아이디어: Flask 서버와 공공 API 연동으로 현재 기온, 체감온도, 습도, 풍속을 간단하고 직관적인 UI로 제공하는 웹 서비스  
+---
 
-## 3. 주요 기능 설계  
-- API 기반 날씨 데이터 제공 (OpenWeatherMap 등)  
-- 3시간 단위 단기 예보 및 5~7일 주간 예보 카드 UI 표시  
-- Flask + Jinja2 또는 React 프론트엔드 기반 가볍고 직관적인 UI/UX  
-- 일정 시간 캐시 적용으로 응답 속도 및 API 호출 비용 절감  
+## 프로젝트 소개
 
-## 4. 개발 및 협업 일정  
-| 주차   | 내용                         |  
-| ------ | ---------------------------- |  
-| 2주차  | 역할 분담, 제안서 작성, GitHub 계정 생성 |  
-| 3주차  | 제안서 발표, 팀 저장소 생성  |  
-| 4주차  | 기능 설계 회의, GitHub 사용 숙련 |  
-| 5~8주차| 1차 기능 개발, PR 및 리뷰 반복 |  
-| 9주차  | 개선 계획 및 회의            |  
-| 10~12주차 | 2차 기능 개발 및 버그 수정 |  
-| 13주차 | 시연 및 발표 준비            |  
-| 14주차 | 최종 발표                   |  
+- 기존 날씨 서비스의 광고 과다 및 복잡한 UI 문제 해결
+- Flask 서버와 공공 API 연동으로 실시간 날씨 정보 제공
 
-## 5. GitHub 협업 계획  
-- 메인 브랜치: develop  
-- 커밋 타입: feature, modify, refactor, fix, docs, chore  
-- 이슈명 규칙: 커밋 타입 + 이슈 번호 + 설명 (예: feature/#3-날씨_조회)  
-- 브랜치명 규칙: 커밋 타입/#이슈번호 (예: feature/#3)  
-- PR 작성: 제목(feature : 기능명), 내용(구현 요약, 테스트, 리뷰 요청)  
-- 리뷰: 최소 1인 승인 후 병합, 병합 시 팀원 동의 필요  
-- 회의록 및 문서: 노션 페이지 및 GitHub 저장소에 관리  
+---
 
-## 6. 예상 결과물 및 향후 계획  
-- 도시 검색 기능 추가 (원하는 지역 날씨 조회)  
-- 즐겨찾기 기능 (자주 확인 도시 저장 및 모아보기)  
+## 기술 스택
 
-## 7. 기대 효과 및 목표  
-- 공공 API 활용 능력 향상  
-- Flask 웹 개발 역량 강화  
-- GitHub 협업 및 OSS 코딩 역량 인증 준비  
-- 문서화 및 팀워크 경험  
+- 프론트엔드: Flask + Jinja2 / React
+- 백엔드: Flask
+- API: OpenWeatherMap API
+
+---
+
+## 주요 기능
+
+- 단기 예보
+  - 최저기온, 최고 기온, 체감온도, 날씨, 강수 확률, 습도
+  
+- 주간 예보 (6일 간)
+  - 날짜, 요일, 최저 기온, 최고 기온, 날씨, 강수 확률
+- 기상 특보
+  - 해당 지역의 기상 특보 발령 여부와 발령된 기상 특보의 종류
+- 대기 오염 수치 제공 
+
+---
+
+## Frontend
+
+- 프론트엔드 개발에 관해 적어주세요
+
+---
+
+## Backend
+- 백엔드 개발에 관해 적어주세요
+
+---
+
+## API
+
+### 사용한 API
+
+- OpenWeatherMap API
+    - 현재 날씨, 단기/주간 예보, 습도, 기상 특보, 대기 오염 정도 등 다양한 날씨 정보 제공
+    - 공식 문서: [OpenWeatherMap API] https://openweathermap.org/api
+    - API 키 발급 방법: [One Call API] https://openweathermap.org/api/one-call-3
+    - API 키 발급 방법: [Air Pollution] https://openweathermap.org/api/air-pollution
+    - 일일 호출 제한: 1000 API calls per day for free 0.0012 GBP per API call over the daily limit
+
+### API 사용 예시
+
+- **API 호출**: `requests.get()`을 사용해 OpenWeatherMap의 One Call API와 Air Pollution API에 요청을 보냅니다.
+- **파라미터**:
+ - `lat`, `lon`: 위치 좌표 - `appid`: API 키 - `units`: 단위 (metric: 섭씨)
+ - `lang`: 언어 (kr: 한국어)
+ - `exclude`: 불필요한 데이터 제외 (minutely, hourly)
+- **응답 처리**: `res.json()`으로 JSON 형식의 응답을 받아 처리합니다.
+
+```python
+import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
+
+LAT = 35.1384  # 대연동 위도
+LON = 129.1066  # 대연동 경도
+
+def get_weather_data(lat=LAT, lon=LON):
+    """OpenWeatherMap One Call API 3.0을 사용하여 날씨 데이터를 가져옵니다."""
+    url = "https://api.openweathermap.org/data/3.0/onecall"
+    params = {
+        "lat": lat,
+        "lon": lon,
+        "appid": API_KEY,
+        "units": "metric",
+        "lang": "kr",
+        "exclude": "minutely,hourly"
+    }
+    res = requests.get(url, params=params, timeout=10)
+    res.raise_for_status()
+    return res.json()
+
+def get_air_pollution_data(lat=LAT, lon=LON):
+    """OpenWeatherMap Air Pollution API 2.5를 사용하여 대기 오염 데이터를 가져옵니다."""
+    url = "http://api.openweathermap.org/data/2.5/air_pollution"
+    params = {
+        "lat": lat,
+        "lon": lon,
+        "appid": API_KEY
+    }
+    res = requests.get(url, params=params, timeout=10)
+    res.raise_for_status()
+    return res.json()
+```
+
+
+
+### API 응답 예시
+
+```
+{
+  "current_weather": {
+    "temp_min": 5.8,
+    "temp_max": 14.8,
+    "temperature": 11.0,
+    "sky": 맑음,
+    "precip_type": 강수없음,
+    "precip_prob": 0,
+    "humidity": 20
+  },
+  "weekly_forecast": [
+    {
+      "date": "2025-11-18",
+      "day_of_week": "화요일",
+      "temp_min": 4.2,
+      "temp_max": 8.9,
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0
+    },
+    {
+      "date": "2025-11-19",
+      "day_of_week": "수요일",
+      "temp_min": 4.9,
+      "temp_max": 9.7,
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0
+    }
+  ],
+  "weather_alerts": [
+    {
+      "content": "[기상특보] 현재 발효된 특보가 없습니다."
+    }
+  ],
+  "air_pollution": {
+    "aqi": 1,
+    "aqi_status": "좋음",
+    "pm2_5": 4.8,
+    "pm10": 9.89,
+    "co": 193.55,
+    "no2": 19.62
+  }
+}
+```
+참고: 위 예시는 일부 데이터만 보여주며, 실제 응답에는 더 많은 데이터가 포함됩니다.
+
+---
+
+## 설치 및 실행
+
+1. 저장소 클론
+2. 의존성 설치
+3. API 키 설정
+4. 서버 실행
+
+---
+
+## 팀원 및 역할
+
+| 이름 | 역할 | GitHub ID |
+| --- | --- | --- |
+| 권민준 | 리더 | funky-jun |
+| 권상혁 | 커미터 | pttnekh |
+| 박성제 | 메인테이너 | seongje973 |
