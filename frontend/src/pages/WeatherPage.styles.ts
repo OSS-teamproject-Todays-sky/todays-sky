@@ -220,3 +220,33 @@ export const WeatherAlertSection = styled.section`
     line-height: 1.5;
   }
 `;
+
+//배경이미지 추가
+export const Background = styled.div<{ sky: string }>`
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.5s ease-in-out;
+
+  ${({ sky }) =>
+    sky.includes("맑음") &&
+    `background-image: url('/backgrounds/clear.png');`}
+
+  ${({ sky }) =>
+    (sky.includes("흐림") || sky.includes("구름많음")) &&
+    `background-image: url('/backgrounds/fog.png');`}
+
+  ${({ sky }) =>
+    (sky.includes("비") || sky.includes("소나기") || sky.includes("이슬비")) &&
+    `background-image: url('/backgrounds/rain.png');`}
+
+  ${({ sky }) =>
+    sky.includes("눈") &&
+    `background-image: url('/backgrounds/snow.png');`}
+
+  ${({ sky }) =>
+    sky.includes("뇌우") &&
+    `background-image: url('/backgrounds/thunder.png');`}
+`;

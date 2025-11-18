@@ -136,6 +136,7 @@ function WeatherPage() {
   return (
     <>
       <Styled.GlobalStyle />
+      <Styled.Background sky={current_weather.sky}>
       <Styled.StarryBackground /> 
       
       <Styled.WeatherPageContainer>
@@ -224,6 +225,7 @@ function WeatherPage() {
           </Styled.DetailedInfoSection>
         )}
       </Styled.WeatherPageContainer>
+      </Styled.Background>
     </>
   );
 }
