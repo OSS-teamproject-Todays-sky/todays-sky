@@ -72,18 +72,37 @@ function WeatherPage() {
   
   return `(${dayName}요일) ${timeString}`;
 };
+
+  const temperatures = weatherData ? weatherData.weekly_forecast.map(d => Number(d.temp_max)) : [];
   
   const getCoordinates = (temps: number[]) => {
     if(temps.length <2) {
       return [{ x: 50, y: 50 }];
     }
+    const minTemp = Math.min(...temps) - 2;
+    const maxTemp = Math.max(...temps) + 2;
+    const tempRange = maxTemp - minTemp;
+
+    if (tempRange === 0) {
+      return temps.map((temp, i) => ({
+        x: (i / (temps.length - 1)) * 100,
+        y: 50 // 모든 y값을 중앙으로
+      }));
+    }
     
     return temps.map((temp, i) => {
       const x = (i / (temps.length - 1)) * 100;
-      const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
+      const y = 100 - ((temp - minTemp) / tempRange) * 100;
       return { x, y };
     });
   };
+
+  const points = getCoordinates(temperatures);
+  const pathData = points.map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`)).join(' ');
+
+  const minTemp = temperatures.length ? Math.min(...temperatures) - 2 : 0;
+  const maxTemp = temperatures.length ? Math.max(...temperatures) + 2 : 0;
+  const tempRange = maxTemp - minTemp;
 
   if (loading) {
     return (
@@ -112,26 +131,6 @@ function WeatherPage() {
   
   const { current_weather, weekly_forecast, weather_alerts } = weatherData;
   const currentIcon = getIconForSky(current_weather.sky);
-
-  const temperatures = weekly_forecast.map(d => Number(d.temp_max));
-  const minTemp = Math.min(...temperatures);
-  const maxTemp = Math.max(...temperatures);
-
-  const graphMinTemp = Math.floor(minTemp / 5) * 5; 
-  const graphMaxTemp = Math.ceil(maxTemp / 5) * 5; 
-  let graphTempRange = graphMaxTemp - graphMinTemp;
-
-  if (graphTempRange === 0) {
-    graphTempRange = 5; // 임의로 5도 범위를 줌
-  }
-
-  const yAxisLabels = [];
-  for (let temp = graphMaxTemp; temp >= graphMinTemp; temp -= 5) {
-    yAxisLabels.push(temp);
-  }
-
-  const points = getCoordinates(temperatures);
-  const pathData = points.map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`)).join(' ');
   
   return (
     <>
@@ -167,9 +166,9 @@ function WeatherPage() {
 
         <Styled.GraphSection>
           <Styled.YAxisLabels>
-            {yAxisLabels.map(temp => (
-              <span key={temp}>{temp}°</span>
-            ))}
+            <span>{maxTemp}°</span>
+            <span>{tempRange === 0 ? maxTemp : Math.round(minTemp + tempRange / 2)}°</span>
+            <span>{minTemp}°</span>
           </Styled.YAxisLabels>
           <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d={pathData} fill="none" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="0.4" />
