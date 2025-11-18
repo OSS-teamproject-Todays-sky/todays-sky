@@ -148,6 +148,15 @@ export const YAxisLabels = styled.div`
     display: block;
     position: relative;
     padding-right: 10px;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 100vw;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+    }
   }
 `;
 
