@@ -56,6 +56,11 @@ export const WeatherPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   animation: ${fadeIn} 0.8s ease-out;
+
+  /* UI 가독성을 위한 반투명 배경 추가 */
+  background: rgba(0, 0, 0, 0.2);  /* 투명도 조절 */
+  backdrop-filter: blur(6px);     /* 블러 처리 */
+  border-radius: 20px;
 `;
 
 // --- 나머지 스타일 컴포넌트는 이전과 동일 ---
@@ -85,7 +90,7 @@ export const CurrentTemp = styled.span`
     position: absolute;
     top: 1.5rem;
     right: -1.5rem;
-    color: #a0a0a0;
+    color: #ffffffff;
   }
 `;
 
@@ -96,7 +101,7 @@ export const CurrentInfo = styled.div`
   gap: 0.5rem;
 
   h2 { margin: 0; font-size: 1.8rem; font-weight: 600; }
-  p { margin: 0; color: #a0a0a0; font-size: 1rem; }
+  p { margin: 0; color: #ffffffff; font-size: 1rem; }
   .location { font-weight: 500; }
 `;
 
@@ -124,7 +129,7 @@ export const DayForecast = styled.div<{ active?: boolean }>`
   p { margin: 0; font-size: 1rem; }
   .day-name { font-weight: 600; margin-bottom: 1rem; }
   img { width: 50px; height: 50px; margin-bottom: 1rem; }
-  .temps { color: #a0a0a0; }
+  .temps { color: #ffffffff; }
 `;
 
 export const GraphSection = styled.div`
@@ -141,7 +146,7 @@ export const YAxisLabels = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: #a0a0a0;
+  color: #ffffffff;
   font-size: 0.9rem;
   
   span {
@@ -191,7 +196,7 @@ export const DetailText = styled.div`
     font-size: 1rem;
   }
   span {
-    color: #a0a0a0;
+    color: #ffffffff;
   }
 `;
 
@@ -216,7 +221,7 @@ export const WeatherAlertSection = styled.section`
 
   li {
     font-size: 0.95rem;
-    color: #f0f0f0;
+    color: #ffffffff;
     line-height: 1.5;
   }
 `;
