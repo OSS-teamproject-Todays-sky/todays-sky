@@ -150,7 +150,7 @@ function WeatherPage() {
         <Styled.CurrentWeatherSection>
           <Styled.CurrentTempDetails>
             <img src={`http://openweathermap.org/img/wn/${currentIcon}@4x.png`} alt={current_weather.sky} />
-            <Styled.CurrentTemp>{Math.round(Number(current_weather.temperature))}</Styled.CurrentTemp>
+            <Styled.CurrentTemp>{Math.round(current_weather.temperature)}</Styled.CurrentTemp>
           </Styled.CurrentTempDetails>
           <Styled.CurrentInfo>
             <h2>{current_weather.sky}</h2>

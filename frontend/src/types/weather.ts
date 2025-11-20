@@ -1,7 +1,7 @@
 export interface CurrentWeather {
-  temp_min: string;
-  temp_max: string;
-  temperature: string;
+  temp_min: number;
+  temp_max: number;
+  temperature: number;
   sky: string;
   precip_type: string;
   precip_prob: string;
