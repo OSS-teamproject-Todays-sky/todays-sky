@@ -7,11 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
-#대연동의 좌표
-LAT = 35.1384
-LON = 129.1066
+# 도시 검색 기능 추가 전까지 임시로 사용되는 좌표
+LAT = 35.1384  # 부산 대연동 위도
+LON = 129.1066 # 부산 대연동 경도
 
-
+# OpenWeatherMap 날씨 코드 -> 한국어 번역 딕셔너리
 weather_translate = {
     "Clear": "맑음",
     "Clouds": "구름많음",
@@ -40,7 +40,10 @@ aqi_translate = {
 }
 
 def get_weather_data(lat=LAT, lon=LON):
-    """날씨 (One Call API 3.0) 데이터를 가져옵니다."""
+    """
+    날씨 (One Call API 3.0) 데이터를 가져옵니다. 
+    시간별 데이터(hourly)를 포함하도록 exclude 파라미터를 수정했습니다.
+    """
     url = "https://api.openweathermap.org/data/3.0/onecall"
     params = {
         "lat": lat,
@@ -48,7 +51,8 @@ def get_weather_data(lat=LAT, lon=LON):
         "appid": API_KEY,
         "units": "metric",
         "lang": "kr",
-        "exclude": "minutely,hourly"
+        # 'hourly'를 제외 목록에서 제거하여 1시간 단위 예보 데이터를 포함합니다.
+        "exclude": "minutely"
     }
     res = requests.get(url, params=params, timeout=10)
     res.raise_for_status()
@@ -66,22 +70,36 @@ def get_air_pollution_data(lat=LAT, lon=LON):
     res.raise_for_status()
     return res.json()
 
+# 새롭게 추가된 함수
+def process_hourly_data(data):
+    """시간별 기온 데이터를 처리하여 그래프 표기용 리스트를 반환합니다."""
+    hourly_forecast = []
+    # 'hourly' 배열은 기본적으로 48시간 예보를 포함합니다.
+    hourly_list = data.get("hourly", []) 
+    
+    # 예시로 24시간 동안의 데이터를 추출합니다. (48시간 모두 사용 가능)
+    for item in hourly_list[:24]: 
+        dt = datetime.fromtimestamp(item.get("dt"))
+        hourly_forecast.append({
+            "time": dt.strftime("%H:%M"),  # 시간 (예: "09:00")
+            "temp": round(item.get("temp", 0), 1),  # 기온
+        })
+    return hourly_forecast
+
 def process_data(data):
     """One Call API 데이터(날씨, 주간예보, 특보)를 처리합니다."""
     curr = data.get("current", {})
     daily = data.get("daily", [])
 
-    # 1. 현재 날씨 (Daily[0]에서 가져옴)
+    # 1. 현재 날씨
     weather = curr.get("weather", [{}])[0]
     sky = weather_translate.get(weather.get("main"), weather.get("description", "정보없음"))
     temperature = curr.get("temp")
     humidity = curr.get("humidity")
     
-    # daily[0]는 현재 날짜의 예보입니다.
     temp_min = daily[0].get("temp", {}).get("min") if daily else None
     temp_max = daily[0].get("temp", {}).get("max") if daily else None
     
-    # 강수/강설 유형 판단
     weather_id = weather.get("id", 0)
     rain = curr.get("rain")
     snow = curr.get("snow")
@@ -108,7 +126,6 @@ def process_data(data):
     # 2. 주간 예보 (내일부터 6일간의 예보)
     days_of_week = ['월', '화', '수', '목', '금', '토', '일']
     weekly_forecast = []
-    # daily[1:7] -> 내일부터 6일간의 데이터
     for day in daily[1:7]: 
         dt = datetime.fromtimestamp(day.get("dt"))
         day_of_week = f"{days_of_week[dt.weekday()]}요일"
@@ -164,13 +181,10 @@ def process_air_pollution_data(data):
     aqi_value = current_aqi.get("main", {}).get("aqi")
 
     return {
-        # 대기질 지수 (Air Quality Index, 1=좋음, 5=위험)
         "aqi": str(aqi_value) if aqi_value else "정보없음",
         "aqi_status": aqi_translate.get(aqi_value, "정보없음"),
-        # 미세먼지 농도 (단위: $\mu g/m^3$)
         "pm2_5": str(round(components.get("pm2_5", 0), 2)),
         "pm10": str(round(components.get("pm10", 0), 2)),
-        # 다른 오염 물질: CO, NO, NO2, O3, SO2, NH3
         "co": str(round(components.get("co", 0), 2)),
         "no2": str(round(components.get("no2", 0), 2)),
     }
@@ -179,12 +193,15 @@ def process_air_pollution_data(data):
 if __name__ == "__main__":
     weather_data = get_weather_data()
     result = process_data(weather_data)
+    
+    # 4. 시간별 기온 데이터 처리 및 통합
+    hourly_result = process_hourly_data(weather_data)
+    result["hourly_forecast"] = hourly_result
 
-    # 2. 미세먼지 데이터 가져오기 및 처리
+    # 5. 미세먼지 데이터 가져오기 및 처리
     try:
         pollution_data = get_air_pollution_data()
         air_pollution_result = process_air_pollution_data(pollution_data)
-        # 최종 결과에 통합
         result["air_pollution"] = air_pollution_result
     except requests.exceptions.HTTPError as e:
         print(f"Error fetching air pollution data: {e}. Check your API key and permissions.")
