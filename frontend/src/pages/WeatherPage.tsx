@@ -1,6 +1,7 @@
 import { useState, useEffect }from 'react';
 import * as Styled from './WeatherPage.styles';
 import type { WeatherData, DailyForecast } from '../types/weather';
+import { BackgroundKey } from '../utils/BackgroundKey';
 
 const getIconForSky = (sky: string | undefined): string => {
   if (!sky) return '01d'; // 기본값 (맑음)
@@ -136,7 +137,7 @@ function WeatherPage() {
   return (
     <>
       <Styled.GlobalStyle />
-      <Styled.Background sky={current_weather.sky}>
+      <Styled.Background bg={BackgroundKey(current_weather.sky)}>
       <Styled.StarryBackground /> 
       
       <Styled.WeatherPageContainer>
