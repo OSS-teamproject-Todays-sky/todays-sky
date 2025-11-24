@@ -1,97 +1,209 @@
 {
   "air_pollution": {
-    "aqi": "2",
-    "aqi_status": "보통",
-    "co": "153.45",
-    "no2": "9.19",
-    "pm10": "7.55",
-    "pm2_5": "4.49"
+    "aqi": "5",
+    "co": "386.78",
+    "no2": "4.55",
+    "pm10": "110.91",
+    "pm10_status_kr": "나쁨",
+    "pm2_5": "95.93",
+    "pm2_5_status_kr": "상당히 나쁨"
   },
   "current_weather": {
-    "humidity": "61",
-    "precip_prob": "0",
+    "humidity": "87",
+    "precip_prob": "20",
     "precip_type": "강수없음",
-    "sky": "맑음",
-    "temp_max": "15.9",
+    "sky": "구름많음",
+    "temp_max": "14.2",
     "temp_min": "8.0",
     "temperature": "8.0"
   },
+  "hourly_forecast": [
+    {
+      "temp": 9.3,
+      "time": "00:00",
+      "weather_icon": "04n"
+    },
+    {
+      "temp": 8,
+      "time": "01:00",
+      "weather_icon": "04n"
+    },
+    {
+      "temp": 9.1,
+      "time": "02:00",
+      "weather_icon": "04n"
+    },
+    {
+      "temp": 10,
+      "time": "03:00",
+      "weather_icon": "04n"
+    },
+    {
+      "temp": 10.7,
+      "time": "04:00",
+      "weather_icon": "03n"
+    },
+    {
+      "temp": 11.4,
+      "time": "05:00",
+      "weather_icon": "02n"
+    },
+    {
+      "temp": 12,
+      "time": "06:00",
+      "weather_icon": "01n"
+    },
+    {
+      "temp": 11.8,
+      "time": "07:00",
+      "weather_icon": "01n"
+    },
+    {
+      "temp": 12,
+      "time": "08:00",
+      "weather_icon": "01d"
+    },
+    {
+      "temp": 12.7,
+      "time": "09:00",
+      "weather_icon": "02d"
+    },
+    {
+      "temp": 13.2,
+      "time": "10:00",
+      "weather_icon": "04d"
+    },
+    {
+      "temp": 14.2,
+      "time": "11:00",
+      "weather_icon": "04d"
+    },
+    {
+      "temp": 13.5,
+      "time": "12:00",
+      "weather_icon": "10d"
+    },
+    {
+      "temp": 11.9,
+      "time": "13:00",
+      "weather_icon": "10d"
+    },
+    {
+      "temp": 12.8,
+      "time": "14:00",
+      "weather_icon": "04d"
+    },
+    {
+      "temp": 12.3,
+      "time": "15:00",
+      "weather_icon": "03d"
+    },
+    {
+      "temp": 11.6,
+      "time": "16:00",
+      "weather_icon": "01d"
+    },
+    {
+      "temp": 10.3,
+      "time": "17:00",
+      "weather_icon": "01d"
+    },
+    {
+      "temp": 9.5,
+      "time": "18:00",
+      "weather_icon": "01n"
+    },
+    {
+      "temp": 8.9,
+      "time": "19:00",
+      "weather_icon": "01n"
+    },
+    {
+      "temp": 8.7,
+      "time": "20:00",
+      "weather_icon": "01n"
+    },
+    {
+      "temp": 8.6,
+      "time": "21:00",
+      "weather_icon": "01n"
+    },
+    {
+      "temp": 8.6,
+      "time": "22:00",
+      "weather_icon": "01n"
+    },
+    {
+      "temp": 8.5,
+      "time": "23:00",
+      "weather_icon": "01n"
+    }
+  ],
   "weather_alerts": [
     {
-      "announcement_time": "",
       "content": "[기상특보] 현재 발효된 특보가 없습니다."
     }
   ],
   "weekly_forecast": [
     {
-      "date": "2025-11-11",
-      "day_of_week": "화요일",
-      "precip_prob_am": 0,
-      "precip_prob_pm": 0,
-      "sky_am": "구름많음",
-      "sky_pm": "구름많음",
-      "temp_max": 15.9,
-      "temp_min": 8
-    },
-    {
-      "date": "2025-11-12",
+      "date": "2025-11-26",
       "day_of_week": "수요일",
       "precip_prob_am": 0,
       "precip_prob_pm": 0,
-      "sky_am": "구름많음",
-      "sky_pm": "구름많음",
-      "temp_max": 16.3,
-      "temp_min": 10.7
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "temp_max": 13,
+      "temp_min": 7.1
     },
     {
-      "date": "2025-11-13",
+      "date": "2025-11-27",
       "day_of_week": "목요일",
-      "precip_prob_am": 0,
-      "precip_prob_pm": 0,
-      "sky_am": "구름많음",
-      "sky_pm": "구름많음",
-      "temp_max": 18.7,
-      "temp_min": 12.7
+      "precip_prob_am": 100,
+      "precip_prob_pm": 100,
+      "sky_am": "비",
+      "sky_pm": "비",
+      "temp_max": 15.2,
+      "temp_min": 8.3
     },
     {
-      "date": "2025-11-14",
+      "date": "2025-11-28",
       "day_of_week": "금요일",
       "precip_prob_am": 0,
       "precip_prob_pm": 0,
       "sky_am": "맑음",
       "sky_pm": "맑음",
-      "temp_max": 17.2,
-      "temp_min": 12.4
+      "temp_max": 10.5,
+      "temp_min": 5.9
     },
     {
-      "date": "2025-11-15",
+      "date": "2025-11-29",
       "day_of_week": "토요일",
       "precip_prob_am": 0,
       "precip_prob_pm": 0,
       "sky_am": "맑음",
       "sky_pm": "맑음",
-      "temp_max": 17,
-      "temp_min": 12.4
+      "temp_max": 13.2,
+      "temp_min": 6.4
     },
     {
-      "date": "2025-11-16",
+      "date": "2025-11-30",
       "day_of_week": "일요일",
-      "precip_prob_am": 0,
-      "precip_prob_pm": 0,
-      "sky_am": "맑음",
-      "sky_pm": "맑음",
-      "temp_max": 18.1,
-      "temp_min": 12.9
+      "precip_prob_am": 80,
+      "precip_prob_pm": 80,
+      "sky_am": "비",
+      "sky_pm": "비",
+      "temp_max": 16.7,
+      "temp_min": 10.7
     },
     {
-      "date": "2025-11-17",
+      "date": "2025-12-01",
       "day_of_week": "월요일",
-      "precip_prob_am": 0,
-      "precip_prob_pm": 0,
-      "sky_am": "구름많음",
-      "sky_pm": "구름많음",
-      "temp_max": 10.8,
-      "temp_min": 6.3
+      "precip_prob_am": 100,
+      "precip_prob_pm": 100,
+      "sky_am": "비",
+      "sky_pm": "비",
+      "temp_max": 16.4,
+      "temp_min": 4.5
     }
   ]
 }
