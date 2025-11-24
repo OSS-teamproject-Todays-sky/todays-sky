@@ -6,5 +6,7 @@ export const BackgroundKey = (sky: string): string => {
   if (sky === "비" || sky === "소나기" || sky === "이슬비") return "rain";
   if (sky === "눈") return "snow";
   if (sky === "뇌우") return "thunder";
-  return "clear";
+
+  //어떠한 조건에도 맞지 않을경우 이미지가 없다고 가정하여 기본 배경 반환
+  return "__NO_IMAGE__";
 };

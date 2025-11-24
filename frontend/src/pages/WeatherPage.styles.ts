@@ -226,16 +226,15 @@ export const WeatherAlertSection = styled.section`
   }
 `;
 
-//배경이미지 추가
-export const Background = styled.div<{ bg: string }>`
+export const Background = styled.div<{ sky: string }>`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 0.5s ease-in-out;
-
-  ${({ bg }) => bg && `
-    background-image: url('/backgrounds/${bg}.png');
-  `}
+  z-index: -10;
+  background-image: url('/backgrounds/${({ sky }) => sky}.png');
 `;
