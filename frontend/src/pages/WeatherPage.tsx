@@ -1,6 +1,7 @@
 import { useState, useEffect }from 'react';
 import * as Styled from './WeatherPage.styles';
 import type { WeatherData, DailyForecast } from '../types/weather';
+import { BackgroundKey } from '../utils/BackgroundKey';
 
 const getIconForSky = (sky: string | undefined): string => {
   if (!sky) return '01d'; // 기본값 (맑음)
@@ -132,11 +133,18 @@ function WeatherPage() {
 
   const points = getCoordinates(temperatures);
   const pathData = points.map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`)).join(' ');
+  const bgKey = BackgroundKey(current_weather.sky);
   
   return (
     <>
       <Styled.GlobalStyle />
-      <Styled.StarryBackground /> 
+      {/* 이미지가 존재할 때 */}
+      {bgKey !== "__NO_IMAGE__" ? (
+        <Styled.Background sky={bgKey} />
+      ) : (
+        /* 이미지가 없을 때 → 기본 별 배경 표시 */
+        <Styled.StarryBackground />
+      )}
       
       <Styled.WeatherPageContainer>
         <Styled.CurrentWeatherSection>
