@@ -162,6 +162,25 @@ export const GraphContainer = styled.svg`
   overflow: visible;
 `;
 
+export const PointWrapper = styled.div`
+  position: absolute;
+  transform: translate(-50%, -50%); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none; 
+`;
+
+export const TempLabel = styled.span`
+  margin-top: 24px; 
+  
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+`;
+
 export const DetailedInfoSection = styled.section`
   background: rgba(255, 255, 255, 0.1);
   padding: 1.5rem 2rem;
