@@ -173,26 +173,42 @@ function WeatherPage() {
           </Styled.YAxisLabels>
           <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
             {yAxisLabels.map((temp) => {
-              // 각 온도(temp)에 맞는 Y좌표 계산 (getCoordinates 로직과 동일)
               const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
               return (
                 <line 
                   key={`grid-${temp}`}
-                  x1="0" 
-                  y1={y} 
-                  x2="100" 
-                  y2={y} 
-                  stroke="rgba(255, 255, 255, 0.8)" // 은은한 색상
+                  x1="0" y1={y} x2="100" y2={y} 
+                  stroke="rgba(255, 255, 255, 0.8)"
                   strokeWidth="0.3" 
-                  strokeDasharray="0.5 2" // 점선 효과
+                  strokeDasharray="0.5 2"
+                  vectorEffect="non-scaling-stroke"
                 />
               );
             })}
-            <path d={pathData} fill="none" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="0.4" />
+            <path d={pathData} fill="none" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
             {points.map((point, i) => (
-              <circle key={i} cx={point.x} cy={point.y} r="0.8" fill="white" />
+              <path
+                key={`dot-${i}`}
+                d={`M ${point.x} ${point.y} L ${point.x} ${point.y}`} 
+                stroke="white" 
+                strokeWidth="8px"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+              />
             ))}
           </Styled.GraphContainer>
+          {points.map((point, i) => (
+            <Styled.PointWrapper 
+              key={i} 
+              style={{ 
+                left: `${point.x}%`, 
+                top: `${point.y}%` 
+              }}>
+              <Styled.TempLabel>
+                {Math.round(temperatures[i])}°
+              </Styled.TempLabel>
+            </Styled.PointWrapper>
+          ))}
         </Styled.GraphSection>
         
         <Styled.WeeklyForecastSection>
