@@ -238,3 +238,42 @@ export const Background = styled.div<{ sky: string }>`
   z-index: -10;
   background-image: url('/backgrounds/${({ sky }) => sky}.png');
 `;
+
+const STATUS_DOT_COLORS: Record<string, string> = {
+  '최고': '#38a1f6',
+  '좋음': '#51c4d4',
+  '양호': '#8c81e3',
+  '보통': '#65b839',
+  '나쁨': '#f7a036',
+  '상당히 나쁨': '#f77836',
+  '매우 나쁨': '#ff5656',
+  '위험': '#b73939',
+  '정보없음': '#6b7280',
+};
+
+export const AirInlineContainer = styled.div`
+    font-size: 0.9rem;
+    margin-top: 5px;
+    color: #ffffffff;
+    font-weight: 400;
+    display: flex; 
+    flex-direction: column;
+    gap: 5px;
+`;
+
+export const PollutantItem = styled.span`
+    display: flex;
+    align-items: center;
+    gap: 5px; /* 점과 텍스트 사이 간격 */
+    font-weight: 500;
+`;
+
+export const StatusDot = styled.span<{ $status: string }>`
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    /* margin: 0 4px 0 8px; */
+    vertical-align: middle;
+    background-color: ${(props) => STATUS_DOT_COLORS[props.$status] || STATUS_DOT_COLORS['정보없음']};
+`;

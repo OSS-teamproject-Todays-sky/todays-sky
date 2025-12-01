@@ -111,7 +111,7 @@ function WeatherPage() {
   }
   if (!weatherData) return null;
   
-  const { current_weather, weekly_forecast, weather_alerts } = weatherData;
+  const { current_weather, weekly_forecast, weather_alerts, air_pollution } = weatherData;
   const currentIcon = getIconForSky(current_weather.sky);
 
   const temperatures = weekly_forecast.map(d => Number(d.temp_max));
@@ -152,14 +152,33 @@ function WeatherPage() {
             <img src={`http://openweathermap.org/img/wn/${currentIcon}@4x.png`} alt={current_weather.sky} />
             <Styled.CurrentTemp>{Math.round(Number(current_weather.temperature))}</Styled.CurrentTemp>
           </Styled.CurrentTempDetails>
+          // WeatherPage.tsx 파일 내 return () 내부
           <Styled.CurrentInfo>
             <h2>{current_weather.sky}</h2>
             <p>{current_weather.temp_max}° / {current_weather.temp_min}°</p>
           </Styled.CurrentInfo>
-          <Styled.CurrentInfo>
-            {/* TODO: 이 정보는 백엔드 JSON에 추가해야 함 */}
-            <p className="location">Daeyeon-dong, Nam-gu</p>
-            <p>{formatCurrentTime(currentTime)}</p>
+
+          <Styled.CurrentInfo style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', gap: '0.5rem' }}>
+              <p className="location">Daeyeon-dong, Nam-gu</p>
+              <p>{formatCurrentTime(currentTime)}</p>
+            </div>
+            
+            {/* 미세먼지 정보를 하위 요소로 배치하여 새 줄에 출력 */}
+            {air_pollution && (
+              <Styled.AirInlineContainer>
+                <Styled.PollutantItem>
+                  미세먼지 
+                  <Styled.StatusDot $status={air_pollution.pm10_status_kr || '정보없음'} /> 
+                  {air_pollution.pm10_status_kr || '정보없음'} 
+                </Styled.PollutantItem>
+                <Styled.PollutantItem>
+                  초미세먼지 
+                  <Styled.StatusDot $status={air_pollution.pm2_5_status_kr || '정보없음'} /> 
+                  {air_pollution.pm2_5_status_kr || '정보없음'}
+                </Styled.PollutantItem>
+              </Styled.AirInlineContainer>
+            )}
           </Styled.CurrentInfo>
           {weather_alerts.length > 0 && !weather_alerts[0].content.includes("발효된 특보가 없습니다") && (
           <Styled.WeatherAlertSection>
