@@ -1,142 +1,211 @@
 {
   "air_pollution": {
-    "aqi": "5",
-    "co": "386.78",
-    "no2": "4.55",
-    "pm10": "110.91",
-    "pm10_status_kr": "나쁨",
-    "pm2_5": "95.93",
-    "pm2_5_status_kr": "상당히 나쁨"
+    "pm10": "44.36",
+    "pm10_status_kr": "보통",
+    "pm2_5": "24.24",
+    "pm2_5_status_kr": "보통"
   },
   "current_weather": {
-    "humidity": "87",
-    "precip_prob": "20",
+    "humidity": "48",
+    "precip_prob": "0",
     "precip_type": "강수없음",
-    "sky": "구름많음",
-    "temp_max": "14.2",
-    "temp_min": "8.0",
-    "temperature": "8.0"
+    "sky": "맑음",
+    "temp_max": "12.2",
+    "temp_min": "4.0",
+    "temperature": "4.0"
   },
   "hourly_forecast": [
     {
-      "temp": 9.3,
-      "time": "00:00",
-      "weather_icon": "04n"
+      "temp": 4,
+      "time": "00:00"
     },
     {
-      "temp": 8,
-      "time": "01:00",
-      "weather_icon": "04n"
+      "temp": 5.2,
+      "time": "01:00"
     },
     {
-      "temp": 9.1,
-      "time": "02:00",
-      "weather_icon": "04n"
+      "temp": 6.2,
+      "time": "02:00"
     },
     {
-      "temp": 10,
-      "time": "03:00",
-      "weather_icon": "04n"
+      "temp": 7.1,
+      "time": "03:00"
     },
     {
-      "temp": 10.7,
-      "time": "04:00",
-      "weather_icon": "03n"
+      "temp": 7.7,
+      "time": "04:00"
     },
     {
-      "temp": 11.4,
-      "time": "05:00",
-      "weather_icon": "02n"
+      "temp": 8.4,
+      "time": "05:00"
     },
     {
-      "temp": 12,
-      "time": "06:00",
-      "weather_icon": "01n"
+      "temp": 8.2,
+      "time": "06:00"
     },
     {
-      "temp": 11.8,
-      "time": "07:00",
-      "weather_icon": "01n"
+      "temp": 8.1,
+      "time": "07:00"
     },
     {
-      "temp": 12,
-      "time": "08:00",
-      "weather_icon": "01d"
-    },
-    {
-      "temp": 12.7,
-      "time": "09:00",
-      "weather_icon": "02d"
-    },
-    {
-      "temp": 13.2,
-      "time": "10:00",
-      "weather_icon": "04d"
-    },
-    {
-      "temp": 14.2,
-      "time": "11:00",
-      "weather_icon": "04d"
-    },
-    {
-      "temp": 13.5,
-      "time": "12:00",
-      "weather_icon": "10d"
-    },
-    {
-      "temp": 11.9,
-      "time": "13:00",
-      "weather_icon": "10d"
-    },
-    {
-      "temp": 12.8,
-      "time": "14:00",
-      "weather_icon": "04d"
-    },
-    {
-      "temp": 12.3,
-      "time": "15:00",
-      "weather_icon": "03d"
-    },
-    {
-      "temp": 11.6,
-      "time": "16:00",
-      "weather_icon": "01d"
-    },
-    {
-      "temp": 10.3,
-      "time": "17:00",
-      "weather_icon": "01d"
-    },
-    {
-      "temp": 9.5,
-      "time": "18:00",
-      "weather_icon": "01n"
-    },
-    {
-      "temp": 8.9,
-      "time": "19:00",
-      "weather_icon": "01n"
-    },
-    {
-      "temp": 8.7,
-      "time": "20:00",
-      "weather_icon": "01n"
-    },
-    {
-      "temp": 8.6,
-      "time": "21:00",
-      "weather_icon": "01n"
-    },
-    {
-      "temp": 8.6,
-      "time": "22:00",
-      "weather_icon": "01n"
+      "temp": 8.1,
+      "time": "08:00"
     },
     {
       "temp": 8.5,
-      "time": "23:00",
-      "weather_icon": "01n"
+      "time": "09:00"
+    },
+    {
+      "temp": 9.3,
+      "time": "10:00"
+    },
+    {
+      "temp": 10.2,
+      "time": "11:00"
+    },
+    {
+      "temp": 11.2,
+      "time": "12:00"
+    },
+    {
+      "temp": 11.8,
+      "time": "13:00"
+    },
+    {
+      "temp": 12.2,
+      "time": "14:00"
+    },
+    {
+      "temp": 12.1,
+      "time": "15:00"
+    },
+    {
+      "temp": 11,
+      "time": "16:00"
+    },
+    {
+      "temp": 9.7,
+      "time": "17:00"
+    },
+    {
+      "temp": 8.5,
+      "time": "18:00"
+    },
+    {
+      "temp": 7.5,
+      "time": "19:00"
+    },
+    {
+      "temp": 6.6,
+      "time": "20:00"
+    },
+    {
+      "temp": 5.7,
+      "time": "21:00"
+    },
+    {
+      "temp": 4.9,
+      "time": "22:00"
+    },
+    {
+      "temp": 4,
+      "time": "23:00"
+    },
+    {
+      "temp": 3,
+      "time": "00:00"
+    },
+    {
+      "temp": 2.1,
+      "time": "01:00"
+    },
+    {
+      "temp": 1.5,
+      "time": "02:00"
+    },
+    {
+      "temp": 1.1,
+      "time": "03:00"
+    },
+    {
+      "temp": 0.5,
+      "time": "04:00"
+    },
+    {
+      "temp": 0,
+      "time": "05:00"
+    },
+    {
+      "temp": -0.2,
+      "time": "06:00"
+    },
+    {
+      "temp": -0.3,
+      "time": "07:00"
+    },
+    {
+      "temp": -0.5,
+      "time": "08:00"
+    },
+    {
+      "temp": -0.1,
+      "time": "09:00"
+    },
+    {
+      "temp": 0.8,
+      "time": "10:00"
+    },
+    {
+      "temp": 2.1,
+      "time": "11:00"
+    },
+    {
+      "temp": 3.5,
+      "time": "12:00"
+    },
+    {
+      "temp": 5.3,
+      "time": "13:00"
+    },
+    {
+      "temp": 4.9,
+      "time": "14:00"
+    },
+    {
+      "temp": 4.9,
+      "time": "15:00"
+    },
+    {
+      "temp": 4.3,
+      "time": "16:00"
+    },
+    {
+      "temp": 3.4,
+      "time": "17:00"
+    },
+    {
+      "temp": 2.7,
+      "time": "18:00"
+    },
+    {
+      "temp": 2.2,
+      "time": "19:00"
+    },
+    {
+      "temp": 1.8,
+      "time": "20:00"
+    },
+    {
+      "temp": 1.6,
+      "time": "21:00"
+    },
+    {
+      "temp": 0.9,
+      "time": "22:00"
+    },
+    {
+      "temp": 0.5,
+      "time": "23:00"
     }
   ],
   "weather_alerts": [
@@ -146,64 +215,64 @@
   ],
   "weekly_forecast": [
     {
-      "date": "2025-11-26",
+      "date": "2025-12-03",
       "day_of_week": "수요일",
       "precip_prob_am": 0,
       "precip_prob_pm": 0,
       "sky_am": "맑음",
       "sky_pm": "맑음",
-      "temp_max": 13,
-      "temp_min": 7.1
+      "temp_max": 5.3,
+      "temp_min": -0.5
     },
     {
-      "date": "2025-11-27",
+      "date": "2025-12-04",
       "day_of_week": "목요일",
-      "precip_prob_am": 100,
-      "precip_prob_pm": 100,
-      "sky_am": "비",
-      "sky_pm": "비",
-      "temp_max": 15.2,
-      "temp_min": 8.3
-    },
-    {
-      "date": "2025-11-28",
-      "day_of_week": "금요일",
-      "precip_prob_am": 0,
-      "precip_prob_pm": 0,
+      "precip_prob_am": 39,
+      "precip_prob_pm": 39,
       "sky_am": "맑음",
       "sky_pm": "맑음",
-      "temp_max": 10.5,
-      "temp_min": 5.9
+      "temp_max": 7.2,
+      "temp_min": -0.1
     },
     {
-      "date": "2025-11-29",
+      "date": "2025-12-05",
+      "day_of_week": "금요일",
+      "precip_prob_am": 12,
+      "precip_prob_pm": 12,
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "temp_max": 7,
+      "temp_min": 2.1
+    },
+    {
+      "date": "2025-12-06",
       "day_of_week": "토요일",
       "precip_prob_am": 0,
       "precip_prob_pm": 0,
       "sky_am": "맑음",
       "sky_pm": "맑음",
-      "temp_max": 13.2,
-      "temp_min": 6.4
+      "temp_max": 10.3,
+      "temp_min": 3.5
     },
     {
-      "date": "2025-11-30",
+      "date": "2025-12-07",
       "day_of_week": "일요일",
-      "precip_prob_am": 80,
-      "precip_prob_pm": 80,
-      "sky_am": "비",
-      "sky_pm": "비",
-      "temp_max": 16.7,
-      "temp_min": 10.7
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "구름많음",
+      "sky_pm": "구름많음",
+      "temp_max": 13.1,
+      "temp_min": 8.6
     },
     {
-      "date": "2025-12-01",
+      "date": "2025-12-08",
       "day_of_week": "월요일",
-      "precip_prob_am": 100,
-      "precip_prob_pm": 100,
-      "sky_am": "비",
-      "sky_pm": "비",
-      "temp_max": 16.4,
-      "temp_min": 4.5
+      "precip_prob_am": 0,
+      "precip_prob_pm": 0,
+      "sky_am": "맑음",
+      "sky_pm": "맑음",
+      "temp_max": 14.2,
+      "temp_min": 8.9
     }
   ]
 }
