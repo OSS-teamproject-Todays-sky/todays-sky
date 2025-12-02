@@ -23,9 +23,14 @@ export interface WeatherAlert {
   content: string;
   announcement_time: string;
 }
+export interface hourlyForecast {
+  time: string;
+  temp: number;
+}
 
 export interface WeatherData {
   current_weather: CurrentWeather;
   weekly_forecast: DailyForecast[];
+  hourly_forecast: hourlyForecast[];
   weather_alerts: WeatherAlert[];
 }
