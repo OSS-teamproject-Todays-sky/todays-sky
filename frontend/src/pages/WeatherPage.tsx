@@ -152,7 +152,6 @@ function WeatherPage() {
             <img src={`http://openweathermap.org/img/wn/${currentIcon}@4x.png`} alt={current_weather.sky} />
             <Styled.CurrentTemp>{Math.round(Number(current_weather.temperature))}</Styled.CurrentTemp>
           </Styled.CurrentTempDetails>
-          // WeatherPage.tsx 파일 내 return () 내부
           <Styled.CurrentInfo>
             <h2>{current_weather.sky}</h2>
             <p>{current_weather.temp_max}° / {current_weather.temp_min}°</p>
