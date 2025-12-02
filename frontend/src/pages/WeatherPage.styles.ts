@@ -138,16 +138,40 @@ export const GraphSection = styled.div`
   margin-bottom: 3rem;
 `;
 
+export const GraphScrollWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-left: 40px;
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
+`;
+
+export const GraphContent = styled.div`
+  position: relative; /* 자식(SVG, 점)의 기준점 */
+  height: 100%;
+  /* width는 TSX에서 데이터 개수에 따라 동적으로 설정합니다 */
+`;
+
 export const YAxisLabels = styled.div`
   position: absolute;
   top: 0;
-  left: -15px;
+  left: 0;
+  width: 40px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #ffffffff;
   font-size: 0.9rem;
+  z-index: 20;
   
   span {
     display: block;
