@@ -7,9 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
-LAT = 35.1384  # 부산 대연동 위도
-LON = 129.1066 # 부산 대연동 경도
-
 LAT = 35.1384
 LON = 129.1066
 
@@ -72,7 +69,7 @@ def get_weather_data(lat=LAT, lon=LON):
         "appid": API_KEY,
         "units": "metric",
         "lang": "kr",
-        "exclude": "minutely"  # hourly, daily, alerts는 포함됩니다.
+        "exclude": "minutely"
     }
     res = requests.get(url, params=params, timeout=10)
     res.raise_for_status()
@@ -93,8 +90,7 @@ def get_air_pollution_data(lat=LAT, lon=LON):
 def process_hourly_data(data):
     hourly_forecast = []
     hourly_list = data.get("hourly", [])
-    
-    # API가 제공하는 48시간 데이터를 모두 추출합니다.
+
     for item in hourly_list: 
         dt = datetime.fromtimestamp(item.get("dt"))
         hourly_forecast.append({
@@ -143,7 +139,7 @@ def process_data(data):
 
     days_of_week = ['월', '화', '수', '목', '금', '토', '일']
     weekly_forecast = []
-    # daily[0]는 오늘이므로, daily[1]부터 6개를 가져옵니다.
+
     for day in daily[1:7]: 
         dt = datetime.fromtimestamp(day.get("dt"))
         day_of_week = f"{days_of_week[dt.weekday()]}요일"
