@@ -2,6 +2,7 @@ import { useState, useEffect }from 'react';
 import * as Styled from './WeatherPage.styles';
 import type { WeatherData, DailyForecast } from '../types/weather';
 import { BackgroundKey } from '../utils/BackgroundKey';
+import { translateAlert } from '../utils/translateAlert';
 
 const getIconForSky = (sky: string | undefined): string => {
   if (!sky) return '01d'; // 기본값 (맑음)
@@ -173,12 +174,12 @@ function WeatherPage() {
             <p className="location">Daeyeon-dong, Nam-gu</p>
             <p>{formatCurrentTime(currentTime)}</p>
           </Styled.CurrentInfo>
-          {weather_alerts.length > 0 && !weather_alerts[0].content.includes("발효된 특보가 없습니다") && (
+          {weather_alerts.length > 0 && (
           <Styled.WeatherAlertSection>
             <h3>기상 특보</h3>
             <ul>
               {weather_alerts.map((alert, index) => (
-                <li key={index}>{alert.content}</li>
+                <li key={index}>{translateAlert(alert.content)}</li>
               ))}
             </ul>
           </Styled.WeatherAlertSection>
