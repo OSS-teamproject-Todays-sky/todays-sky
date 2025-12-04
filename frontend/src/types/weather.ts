@@ -1,7 +1,7 @@
 export interface CurrentWeather {
-  temp_min: string;
-  temp_max: string;
-  temperature: string;
+  temp_min: number;
+  temp_max: number;
+  temperature: number;
   sky: string;
   precip_type: string;
   precip_prob: string;
@@ -39,10 +39,15 @@ export interface HourlyForecast {
   time: string;
   temp: number;
 }
+export interface hourlyForecast {
+  time: string;
+  temp: number;
+}
 
 export interface WeatherData {
   current_weather: CurrentWeather;
   weekly_forecast: DailyForecast[];
+  hourly_forecast: hourlyForecast[];
   weather_alerts: WeatherAlert[];
   hourly_forecast: HourlyForecast[];
   air_pollution: AirPollutionData; 

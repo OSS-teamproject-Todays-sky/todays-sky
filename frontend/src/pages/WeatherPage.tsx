@@ -23,6 +23,8 @@ function WeatherPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  // 밤인지 판단하는 함수
+  const isNight = currentTime.getHours() >= 18 || currentTime.getHours() < 6;
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -111,10 +113,15 @@ function WeatherPage() {
   }
   if (!weatherData) return null;
   
-  const { current_weather, weekly_forecast, weather_alerts, air_pollution } = weatherData;
+  const { current_weather, weekly_forecast, weather_alerts, air_pollution, hourly_forecast } = weatherData;
+  
   const currentIcon = getIconForSky(current_weather.sky);
 
-  const temperatures = weekly_forecast.map(d => Number(d.temp_max));
+  const graphData = hourly_forecast || [];
+  const itemWidth = 60;
+  const totalGraphWidth = Math.max(graphData.length * itemWidth, 1000);
+
+  const temperatures = graphData.map(d => d.temp);
   const minTemp = Math.min(...temperatures);
   const maxTemp = Math.max(...temperatures);
 
@@ -133,24 +140,34 @@ function WeatherPage() {
 
   const points = getCoordinates(temperatures);
   const pathData = points.map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`)).join(' ');
-  const bgKey = BackgroundKey(current_weather.sky);
+  const bgKey = BackgroundKey(current_weather.sky, isNight);
   
   return (
     <>
       <Styled.GlobalStyle />
-      {/* 이미지가 존재할 때 */}
-      {bgKey !== "__NO_IMAGE__" ? (
-        <Styled.Background sky={bgKey} />
+      {/* 배경 렌더링 */}
+      {isNight ? (
+        bgKey !== "__NO_NIGHT_IMAGE__" ? (
+          // 밤 & night 이미지 존재함
+          <Styled.Background sky={bgKey} />
+        ) : (
+          // 밤 & night 이미지 없음 → 별 배경
+          <Styled.StarryBackground />
+        )
       ) : (
-        /* 이미지가 없을 때 → 기본 별 배경 표시 */
-        <Styled.StarryBackground />
+        // 낮
+        bgKey !== "__NO_IMAGE__" ? (
+          <Styled.Background sky={bgKey} />
+        ) : (
+          <Styled.StarryBackground />
+        )
       )}
       
       <Styled.WeatherPageContainer>
         <Styled.CurrentWeatherSection>
           <Styled.CurrentTempDetails>
             <img src={`http://openweathermap.org/img/wn/${currentIcon}@4x.png`} alt={current_weather.sky} />
-            <Styled.CurrentTemp>{Math.round(Number(current_weather.temperature))}</Styled.CurrentTemp>
+            <Styled.CurrentTemp>{Math.round(current_weather.temperature)}</Styled.CurrentTemp>
           </Styled.CurrentTempDetails>
           <Styled.CurrentInfo>
             <h2>{current_weather.sky}</h2>
@@ -195,27 +212,48 @@ function WeatherPage() {
               <span key={temp}>{temp}°</span>
             ))}
           </Styled.YAxisLabels>
-          <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
-            {yAxisLabels.map((temp) => {
-              const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
-              return (
-                <line 
-                  key={`grid-${temp}`}
-                  x1="0" 
-                  y1={y} 
-                  x2="100" 
-                  y2={y} 
-                  stroke="rgba(255, 255, 255, 0.8)" // 은은한 색상
-                  strokeWidth="0.3" 
-                  strokeDasharray="0.5 2" // 점선 효과
-                />
-              );
-            })}
-            <path d={pathData} fill="none" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="0.4" />
-            {points.map((point, i) => (
-              <circle key={i} cx={point.x} cy={point.y} r="0.8" fill="white" />
-            ))}
-          </Styled.GraphContainer>
+          <Styled.GraphScrollWrapper>
+            <Styled.GraphContent style={{ width: `${totalGraphWidth}px` }}>
+              <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
+                {yAxisLabels.map((temp) => {
+                  const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
+                  return (
+                    <line 
+                      key={`grid-${temp}`}
+                      x1="0" y1={y} x2="100" y2={y} 
+                      stroke="rgba(255, 255, 255, 0.8)"
+                      strokeWidth="0.3" 
+                      strokeDasharray="0.5 2"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  );
+                })}
+                <path d={pathData} fill="none" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
+                {points.map((point, i) => (
+                  <path
+                    key={`dot-${i}`}
+                    d={`M ${point.x} ${point.y} L ${point.x} ${point.y}`} 
+                    stroke="white" 
+                    strokeWidth="8px"
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ))}
+              </Styled.GraphContainer>
+              {points.map((point, i) => (
+                <Styled.PointWrapper 
+                  key={i} 
+                  style={{ 
+                    left: `${point.x}%`, 
+                    top: `${point.y}%` 
+                  }}>
+                  <Styled.TempLabel>
+                    {Math.round(temperatures[i])}°
+                  </Styled.TempLabel>
+                </Styled.PointWrapper>
+              ))}
+            </Styled.GraphContent>
+          </Styled.GraphScrollWrapper>
         </Styled.GraphSection>
         
         <Styled.WeeklyForecastSection>
