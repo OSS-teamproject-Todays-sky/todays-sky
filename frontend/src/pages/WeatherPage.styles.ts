@@ -96,9 +96,9 @@ export const CurrentTemp = styled.span`
 
 export const CurrentInfo = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  gap: 0.5rem;
+  flex-direction: column; /* 세로 배치 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  gap: 0; /* 세로 배치이므로 기본 gap 제거 */
 
   h2 { margin: 0; font-size: 1.8rem; font-weight: 600; }
   p { margin: 0; color: #ffffffff; font-size: 1rem; }
@@ -166,7 +166,6 @@ export const DetailedInfoSection = styled.section`
   background: rgba(255, 255, 255, 0.1);
   padding: 1.5rem 2rem;
   border-radius: 15px;
-  margin-top: -1rem; /* 주간 예보와 그래프 사이 간격 조정 */
   margin-bottom: 2rem;
   animation: ${fadeIn} 0.5s ease-out; /* 부드럽게 나타나는 효과 */
 
@@ -257,14 +256,15 @@ export const AirInlineContainer = styled.div`
     color: #ffffffff;
     font-weight: 400;
     display: flex; 
-    flex-direction: column;
-    gap: 5px;
+    flex-direction: row;
+    gap: 15px; 
+    align-items: center;
 `;
 
 export const PollutantItem = styled.span`
     display: flex;
     align-items: center;
-    gap: 5px; /* 점과 텍스트 사이 간격 */
+    gap: 5px;
     font-weight: 500;
 `;
 
@@ -273,7 +273,6 @@ export const StatusDot = styled.span<{ $status: string }>`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    /* margin: 0 4px 0 8px; */
     vertical-align: middle;
     background-color: ${(props) => STATUS_DOT_COLORS[props.$status] || STATUS_DOT_COLORS['정보없음']};
 `;

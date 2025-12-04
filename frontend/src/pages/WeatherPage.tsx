@@ -156,29 +156,27 @@ function WeatherPage() {
             <h2>{current_weather.sky}</h2>
             <p>{current_weather.temp_max}° / {current_weather.temp_min}°</p>
           </Styled.CurrentInfo>
-
-          <Styled.CurrentInfo style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', gap: '0.5rem' }}>
-              <p className="location">Daeyeon-dong, Nam-gu</p>
-              <p>{formatCurrentTime(currentTime)}</p>
-            </div>
-            
-            {/* 미세먼지 정보를 하위 요소로 배치하여 새 줄에 출력 */}
-            {air_pollution && (
-              <Styled.AirInlineContainer>
-                <Styled.PollutantItem>
-                  미세먼지 
-                  <Styled.StatusDot $status={air_pollution.pm10_status_kr || '정보없음'} /> 
-                  {air_pollution.pm10_status_kr || '정보없음'} 
-                </Styled.PollutantItem>
-                <Styled.PollutantItem>
-                  초미세먼지 
-                  <Styled.StatusDot $status={air_pollution.pm2_5_status_kr || '정보없음'} /> 
-                  {air_pollution.pm2_5_status_kr || '정보없음'}
-                </Styled.PollutantItem>
-              </Styled.AirInlineContainer>
-            )}
+          
+          <Styled.CurrentInfo>
+            <p className="location">Daeyeon-dong, Nam-gu</p>
+            <p>{formatCurrentTime(currentTime)}</p>
           </Styled.CurrentInfo>
+            
+          {air_pollution && (
+            <Styled.AirInlineContainer>
+              <Styled.PollutantItem>
+                미세먼지 
+                <Styled.StatusDot $status={air_pollution.pm10_status_kr || '정보없음'} /> 
+                {air_pollution.pm10_status_kr || '정보없음'} 
+              </Styled.PollutantItem>
+              <Styled.PollutantItem>
+                초미세먼지 
+                <Styled.StatusDot $status={air_pollution.pm2_5_status_kr || '정보없음'} /> 
+                {air_pollution.pm2_5_status_kr || '정보없음'}
+              </Styled.PollutantItem>
+            </Styled.AirInlineContainer>
+          )}
+
           {weather_alerts.length > 0 && !weather_alerts[0].content.includes("발효된 특보가 없습니다") && (
           <Styled.WeatherAlertSection>
             <h3>기상 특보</h3>
@@ -199,7 +197,6 @@ function WeatherPage() {
           </Styled.YAxisLabels>
           <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
             {yAxisLabels.map((temp) => {
-              // 각 온도(temp)에 맞는 Y좌표 계산 (getCoordinates 로직과 동일)
               const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
               return (
                 <line 
