@@ -1,0 +1,55 @@
+name: Weather App CI
+
+# 언제 실행할지 정의 (main 브랜치에 push나 pull request가 발생할 때)
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  # 1. 프론트엔드(React) 빌드 테스트
+  build-frontend:
+    runs-on: ubuntu-latest
+    
+    # 프론트엔드 폴더에서 작업하겠다고 명시 (폴더명이 frontend라고 가정)
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+    - uses: actions/checkout@v3 # 코드 내려받기
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22.x' # 사용하는 노드 버전
+        
+    - name: Install dependencies
+      run: npm install # 라이브러리 설치
+      
+    - name: Build
+      run: npm run build # 빌드 명령어 실행 (오류가 없나 확인)
+
+  # 2. 백엔드(Python) 실행 테스트
+  build-backend:
+    runs-on: ubuntu-latest
+    
+    # 백엔드 폴더에서 작업 (폴더명이 backend라고 가정)
+    defaults:
+      run:
+        working-directory: ./backend
+        
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10' # 사용하는 파이썬 버전
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install flask flask-cors python-dotenv requests

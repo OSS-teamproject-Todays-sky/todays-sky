@@ -114,10 +114,15 @@ function WeatherPage() {
   }
   if (!weatherData) return null;
   
-  const { current_weather, weekly_forecast, weather_alerts } = weatherData;
+  const { current_weather, weekly_forecast, weather_alerts, air_pollution, hourly_forecast } = weatherData;
+  
   const currentIcon = getIconForSky(current_weather.sky);
 
-  const temperatures = weekly_forecast.map(d => Number(d.temp_max));
+  const graphData = hourly_forecast || [];
+  const itemWidth = 60;
+  const totalGraphWidth = Math.max(graphData.length * itemWidth, 1000);
+
+  const temperatures = graphData.map(d => d.temp);
   const minTemp = Math.min(...temperatures);
   const maxTemp = Math.max(...temperatures);
 
@@ -169,11 +174,27 @@ function WeatherPage() {
             <h2>{current_weather.sky}</h2>
             <p>{current_weather.temp_max}° / {current_weather.temp_min}°</p>
           </Styled.CurrentInfo>
+          
           <Styled.CurrentInfo>
-            {/* TODO: 이 정보는 백엔드 JSON에 추가해야 함 */}
             <p className="location">Daeyeon-dong, Nam-gu</p>
             <p>{formatCurrentTime(currentTime)}</p>
           </Styled.CurrentInfo>
+            
+          {air_pollution && (
+            <Styled.AirInlineContainer>
+              <Styled.PollutantItem>
+                미세먼지 
+                <Styled.StatusDot $status={air_pollution.pm10_status_kr || '정보없음'} /> 
+                {air_pollution.pm10_status_kr || '정보없음'} 
+              </Styled.PollutantItem>
+              <Styled.PollutantItem>
+                초미세먼지 
+                <Styled.StatusDot $status={air_pollution.pm2_5_status_kr || '정보없음'} /> 
+                {air_pollution.pm2_5_status_kr || '정보없음'}
+              </Styled.PollutantItem>
+            </Styled.AirInlineContainer>
+          )}
+
           {weather_alerts.length > 0 && (
           <Styled.WeatherAlertSection>
             <h3>기상 특보</h3>
@@ -192,44 +213,48 @@ function WeatherPage() {
               <span key={temp}>{temp}°</span>
             ))}
           </Styled.YAxisLabels>
-          <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
-            {yAxisLabels.map((temp) => {
-              const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
-              return (
-                <line 
-                  key={`grid-${temp}`}
-                  x1="0" y1={y} x2="100" y2={y} 
-                  stroke="rgba(255, 255, 255, 0.8)"
-                  strokeWidth="0.3" 
-                  strokeDasharray="0.5 2"
-                  vectorEffect="non-scaling-stroke"
-                />
-              );
-            })}
-            <path d={pathData} fill="none" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
-            {points.map((point, i) => (
-              <path
-                key={`dot-${i}`}
-                d={`M ${point.x} ${point.y} L ${point.x} ${point.y}`} 
-                stroke="white" 
-                strokeWidth="8px"
-                strokeLinecap="round"
-                vectorEffect="non-scaling-stroke"
-              />
-            ))}
-          </Styled.GraphContainer>
-          {points.map((point, i) => (
-            <Styled.PointWrapper 
-              key={i} 
-              style={{ 
-                left: `${point.x}%`, 
-                top: `${point.y}%` 
-              }}>
-              <Styled.TempLabel>
-                {Math.round(temperatures[i])}°
-              </Styled.TempLabel>
-            </Styled.PointWrapper>
-          ))}
+          <Styled.GraphScrollWrapper>
+            <Styled.GraphContent style={{ width: `${totalGraphWidth}px` }}>
+              <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
+                {yAxisLabels.map((temp) => {
+                  const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
+                  return (
+                    <line 
+                      key={`grid-${temp}`}
+                      x1="0" y1={y} x2="100" y2={y} 
+                      stroke="rgba(255, 255, 255, 0.8)"
+                      strokeWidth="0.3" 
+                      strokeDasharray="0.5 2"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  );
+                })}
+                <path d={pathData} fill="none" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
+                {points.map((point, i) => (
+                  <path
+                    key={`dot-${i}`}
+                    d={`M ${point.x} ${point.y} L ${point.x} ${point.y}`} 
+                    stroke="white" 
+                    strokeWidth="8px"
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ))}
+              </Styled.GraphContainer>
+              {points.map((point, i) => (
+                <Styled.PointWrapper 
+                  key={i} 
+                  style={{ 
+                    left: `${point.x}%`, 
+                    top: `${point.y}%` 
+                  }}>
+                  <Styled.TempLabel>
+                    {Math.round(temperatures[i])}°
+                  </Styled.TempLabel>
+                </Styled.PointWrapper>
+              ))}
+            </Styled.GraphContent>
+          </Styled.GraphScrollWrapper>
         </Styled.GraphSection>
         
         <Styled.WeeklyForecastSection>
