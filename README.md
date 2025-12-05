@@ -40,6 +40,20 @@
 ## Backend
 - 백엔드 개발에 관해 적어주세요
 
+- Flask 서버 실행 방법
+1. cmd(명령 프롬프트) 창을 연다. (맥의 경우 PowerShell 사용)
+2. app.py가 있는 백엔드 폴더(backend)를 경로로 이동하는 명령어를 입력한다.
+3. venv 가상환경을 설치한다. (처음 실행할때만 설치)
+    python -m venv venv # 새 가상환경 생성
+4. venv 가상환경을 구동한다.
+    venv\Scripts\activate # Window
+    source venv/bin/activate     # Mac
+5. Python 패키지 설치 (처음 실행할때만 설치)
+    pip install -r requirements.txt
+6. app.py를 실행해서 정상적으로 flask 서버가 실행되는지 확인한다. (정상적으로 실행될 경우 * Running on http://127.0.0.1:5000) 표시
+    flask run
+7. 서버를 종료할때는 명령 프롬프트 창에서 ctrl + c 를 입력하여 서버를 닫는다.
+
 ---
 
 ## API
