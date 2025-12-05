@@ -21,7 +21,23 @@ export interface DailyForecast {
 
 export interface WeatherAlert {
   content: string;
-  announcement_time: string;
+  // announcement_time 필드는 백엔드에서 제거했으므로 주석 처리하거나 제거 가능
+  // announcement_time: string;
+}
+
+
+// --- 2. 새로 추가된/업데이트된 타입 정의 ---
+
+export interface AirPollutionData {
+  pm2_5: string;
+  pm10: string;
+  pm2_5_status_kr: string;
+  pm10_status_kr: string;
+}
+
+export interface HourlyForecast {
+  time: string;
+  temp: number;
 }
 export interface hourlyForecast {
   time: string;
@@ -33,4 +49,6 @@ export interface WeatherData {
   weekly_forecast: DailyForecast[];
   hourly_forecast: hourlyForecast[];
   weather_alerts: WeatherAlert[];
+  hourly_forecast: HourlyForecast[];
+  air_pollution: AirPollutionData; 
 }
