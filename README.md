@@ -34,7 +34,9 @@
 
 ## Frontend
 
-- 프론트엔드 개발에 관해 적어주세요
+- frontend 폴더 경로로 이동
+- npm install
+- npm run dev
 ---
 
 ## Backend
