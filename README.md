@@ -51,7 +51,7 @@
 3. venv 가상환경을 설치한다. (최초 1회만)
     > python -m venv venv # 새 가상환경 생성
 4. venv 가상환경을 구동한다.
-    > venv\Scripts\activate   # Windows
+    > venv\Scripts\activate   # Windows <br>
     > source venv/bin/activate     # macOS/Linux
 5. Python 패키지 설치 (최초 1회만)
     > pip install -r requirements.txt
