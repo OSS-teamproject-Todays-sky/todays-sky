@@ -53,7 +53,7 @@
 4. venv 가상환경을 구동한다.
     > venv\Scripts\activate   # Windows <br>
     > source venv/bin/activate     # macOS/Linux
-5. Python 패키지 설치 (최초 1회만)
+5. Python 패키지 설치 (패키지가 추가될 때마다 설치)
     > pip install -r requirements.txt
 6. Flask 서버를 실행해서 정상적으로 서버가 실행되는지 확인한다. (정상적으로 실행될 경우 * Running on http://127.0.0.1:5000) 표시
     > flask run
