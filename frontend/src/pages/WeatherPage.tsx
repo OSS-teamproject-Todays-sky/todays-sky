@@ -1,4 +1,5 @@
-import { useState, useEffect }from 'react';
+import * as React from 'react'; // React 전체를 가져옴
+import { useState, useEffect, useRef } from 'react';
 import * as Styled from './WeatherPage.styles';
 import type { WeatherData, DailyForecast } from '../types/weather';
 import { BackgroundKey } from '../utils/BackgroundKey';
@@ -26,6 +27,10 @@ function WeatherPage() {
   const [currentTime, setCurrentTime] = useState(new Date());
   // 밤인지 판단하는 함수
   const isNight = currentTime.getHours() >= 18 || currentTime.getHours() < 6;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -89,6 +94,29 @@ function WeatherPage() {
     });
   };
 
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const onMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const onMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5; // 1.5는 스크롤 속도 배수
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
   if (loading) {
     return (
       <>
@@ -118,11 +146,11 @@ function WeatherPage() {
   
   const currentIcon = getIconForSky(current_weather.sky);
 
-  const graphData = hourly_forecast || [];
-  const itemWidth = 60;
+  const graphData = (hourly_forecast || []).slice(0, 24);
+  const itemWidth = 100;
   const totalGraphWidth = Math.max(graphData.length * itemWidth, 1000);
 
-  const temperatures = graphData.map(d => d.temp);
+  const temperatures = graphData.map(d => (typeof d.temp === 'number' ? d.temp : 0));
   const minTemp = Math.min(...temperatures);
   const maxTemp = Math.max(...temperatures);
 
@@ -209,12 +237,24 @@ function WeatherPage() {
 
         <Styled.GraphSection>
           <Styled.YAxisLabels>
-            {yAxisLabels.map(temp => (
-              <span key={temp}>{temp}°</span>
-            ))}
+            {yAxisLabels.map(temp => {
+              const topPosition = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
+              return (
+                <span key={temp} style={{ top: `${topPosition}%` }}>
+                  {temp}°
+                </span>
+              );
+            })}
           </Styled.YAxisLabels>
-          <Styled.GraphScrollWrapper>
+          <Styled.GraphScrollWrapper 
+            ref={scrollRef}
+            onMouseDown={onMouseDown}
+            onMouseLeave={onMouseLeave}
+            onMouseUp={onMouseUp}
+            onMouseMove={onMouseMove}
+          >
             <Styled.GraphContent style={{ width: `${totalGraphWidth}px` }}>
+              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
               <Styled.GraphContainer viewBox="0 0 100 100" preserveAspectRatio="none">
                 {yAxisLabels.map((temp) => {
                   const y = 100 - ((temp - graphMinTemp) / graphTempRange) * 100;
@@ -242,17 +282,27 @@ function WeatherPage() {
                 ))}
               </Styled.GraphContainer>
               {points.map((point, i) => (
-                <Styled.PointWrapper 
-                  key={i} 
-                  style={{ 
-                    left: `${point.x}%`, 
-                    top: `${point.y}%` 
-                  }}>
-                  <Styled.TempLabel>
-                    {Math.round(temperatures[i])}°
-                  </Styled.TempLabel>
-                </Styled.PointWrapper>
+                <React.Fragment key={i}>
+                  <Styled.PointWrapper 
+                    key={i} 
+                    style={{ 
+                      left: `${point.x}%`, 
+                      top: `${point.y}%` 
+                    }}>
+                    <Styled.TempLabel>
+                      {Math.round(temperatures[i])}°
+                    </Styled.TempLabel>
+                  </Styled.PointWrapper>
+                  <Styled.TimePositioner
+                    style={{
+                      left: `${point.x}%`
+                    }}
+                  >
+                    {graphData[i]?.time}
+                  </Styled.TimePositioner>
+                </React.Fragment>
               ))}
+              </div>
             </Styled.GraphContent>
           </Styled.GraphScrollWrapper>
         </Styled.GraphSection>

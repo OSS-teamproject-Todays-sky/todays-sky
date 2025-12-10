@@ -134,7 +134,7 @@ export const DayForecast = styled.div<{ active?: boolean }>`
 
 export const GraphSection = styled.div`
   position: relative;
-  height: 150px;
+  height: 200px;
   margin-bottom: 3rem;
 `;
 
@@ -143,40 +143,44 @@ export const GraphScrollWrapper = styled.div`
   height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-left: 40px;
+  padding-left: 50px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
   
   &::-webkit-scrollbar {
-    height: 6px;
+    display: none;
   }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-  }
+  scrollbar-width: none;
 `;
 
 export const GraphContent = styled.div`
   position: relative; /* 자식(SVG, 점)의 기준점 */
   height: 100%;
-  /* width는 TSX에서 데이터 개수에 따라 동적으로 설정합니다 */
+  padding-top: 20px;
+  padding-bottom: 40px; 
+  box-sizing: border-box;
 `;
 
 export const YAxisLabels = styled.div`
   position: absolute;
-  top: 0;
+  top: 20px;
   left: 0;
   width: 40px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: #ffffffff;
-  font-size: 0.9rem;
+  height: calc(100% - 60px);
   z-index: 20;
-  
+  pointer-events: none;
+
   span {
-    display: block;
-    position: relative;
+    position: absolute; /* 절대 위치로 배치 */
+    width: 100%;
+    text-align: right;
     padding-right: 10px;
+    transform: translateY(-50%); /* 텍스트 수직 중앙 정렬 */
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
   }
 `;
 
@@ -188,21 +192,36 @@ export const GraphContainer = styled.svg`
 
 export const PointWrapper = styled.div`
   position: absolute;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   z-index: 10;
   pointer-events: none; 
 `;
 
 export const TempLabel = styled.span`
-  margin-top: 24px; 
-  
-  color: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  bottom: 15px; /* 점보다 15px 위에 위치 */
+  color: #fff;
   font-size: 0.9rem;
   font-weight: 500;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+`;
+
+export const TimePositioner = styled.div`
+  position: absolute;
+  top: 100%;
+  margin-top: 10px;
+  transform: translateX(-50%); /* 해당 지점의 중앙에 텍스트 정렬 */
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
 `;
 
 export const DetailedInfoSection = styled.section`
